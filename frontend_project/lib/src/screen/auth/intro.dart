@@ -24,7 +24,7 @@ class _IntroState extends State<Intro> {
         children: [
           SizedBox(height: 150.h),
           Image.asset(
-            'assets/colorCircle.png',
+            'assets/clickMyPage.png',
             height: 330.h,
             width: double.infinity,
           ),

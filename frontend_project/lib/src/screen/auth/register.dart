@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
       body: Form(
         child: ListView(
           children: [
-            SizedBox(height: 170.h),
+            SizedBox(height: 110.h),
             // 이름 입력창
             Container(
               margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
