@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/widget/comment_post.dart';
 
 class Feedpage extends StatelessWidget {
   const Feedpage({super.key});
@@ -66,6 +67,7 @@ class Feedpage extends StatelessWidget {
                     Container(
                       child: Row(
                         children: [
+                          // TODO: 버튼을 누르면 신고 창으로 이동
                           IconButton(
                             icon: Image.asset(
                               'assets/report.png',
@@ -79,6 +81,7 @@ class Feedpage extends StatelessWidget {
                             onPressed: () {},
                             hoverColor: Colors.white,
                           ),
+                          // TODO: 버튼을 누르면 공유 창으로 이동
                           IconButton(
                             icon: Image.asset(
                               'assets/share.png',
@@ -92,6 +95,7 @@ class Feedpage extends StatelessWidget {
                             hoverColor: Colors.white,
                             onPressed: () {},
                           ),
+                          // TODO: 버튼을 누르면 더보기 창으로 이동
                           IconButton(
                             icon: Image.asset(
                               'assets/menu.png',
@@ -130,9 +134,19 @@ class Feedpage extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(width: 8.w),
-                    Image.asset(
-                      'assets/heart.png',
-                      height: 20.h,
+                    // TODO: 좋아요 기능 만들기
+                    IconButton(
+                      icon: Image.asset(
+                        'assets/heart.png',
+                        height: 20.h,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                      ),
+                      hoverColor: Colors.white,
+                      onPressed: () {},
                     ),
                     Text(
                       '51',
@@ -140,9 +154,25 @@ class Feedpage extends StatelessWidget {
                           fontSize: 14.sp, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(width: 8.w),
-                    Image.asset(
-                      'assets/comment.png',
-                      height: 20.h,
+                    IconButton(
+                      icon: Image.asset(
+                        'assets/comment.png',
+                        height: 20.h,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                      ),
+                      hoverColor: Colors.white,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CommentPost();
+                          },
+                        );
+                      },
                     ),
                     Text(
                       '20',
@@ -281,9 +311,25 @@ class Feedpage extends StatelessWidget {
                           fontSize: 14.sp, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(width: 8.w),
-                    Image.asset(
-                      'assets/comment.png',
-                      height: 20.h,
+                    IconButton(
+                      icon: Image.asset(
+                        'assets/comment.png',
+                        height: 20.h,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                      ),
+                      hoverColor: Colors.white,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CommentPost();
+                          },
+                        );
+                      },
                     ),
                     Text(
                       '20',

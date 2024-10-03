@@ -80,6 +80,7 @@ flutter:
     - assets/share.png
     - assets/heart.png
     - assets/comment.png
+    - assets/close.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
