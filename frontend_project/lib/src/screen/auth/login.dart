@@ -58,6 +58,7 @@ class _LoginState extends State<Login> {
               margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 7.h),
               child: TextFormField(
                 controller: _passwordController,
+                obscureText: true,
                 decoration: InputDecoration(
                   labelText: '비밀번호',
                   labelStyle: TextStyle(color: Colors.grey),
@@ -72,47 +73,57 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 200.w),
-              height: 16.h,
-              child: TextButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                  ),
-                  // 버튼에 마우스오버를 했을 때 텍스트 색상 변경을 위함
-                  onHover: (hover) {
-                    setState(() {
-                      _idButtonColor =
-                          hover ? Color.fromRGBO(146, 1, 159, 1) : Colors.grey;
-                    });
-                  },
-                  child: Text(
-                    '아이디를 잊어버리셨나요?',
-                    style: TextStyle(color: _idButtonColor, fontSize: 10.w),
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 190.w),
-              height: 16.h,
-              child: TextButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                  ),
-                  // 버튼에 마우스오버를 했을 때 텍스트 색상 변경을 위함
-                  onHover: (hover) {
-                    setState(() {
-                      _passwordButtonColor =
-                          hover ? Color.fromRGBO(146, 1, 159, 1) : Colors.grey;
-                    });
-                  },
-                  child: Text(
-                    '비밀번호를 잊어버리셨나요?',
-                    style:
-                        TextStyle(color: _passwordButtonColor, fontSize: 10.w),
-                  )),
-            ),
+            // 아이디찾기 버튼
+            // TODO: 보류로 하는게 나을것 같음. 일단 주요 기능만 만들어보기
+            // Container(
+            //   margin: EdgeInsets.only(left: 200.w),
+            //   height: 16.h,
+            //   child: TextButton(
+            //       onPressed: () {
+            //         // 버튼을 클릭하면 아이디찾기 창으로 이동
+            //         Future.delayed(Duration.zero, () {
+            //           Navigator.of(context).push(
+            //               MaterialPageRoute(builder: (context) => Findid()));
+            //         });
+            //       },
+            //       style: OutlinedButton.styleFrom(
+            //         foregroundColor: Colors.white,
+            //       ),
+            //       // 버튼에 마우스오버를 했을 때 텍스트 색상 변경을 위함
+            //       onHover: (hover) {
+            //         setState(() {
+            //           _idButtonColor =
+            //               hover ? Color.fromRGBO(146, 1, 159, 1) : Colors.grey;
+            //         });
+            //       },
+            //       child: Text(
+            //         '아이디를 잊어버리셨나요?',
+            //         style: TextStyle(color: _idButtonColor, fontSize: 10.w),
+            //       )),
+            // ),
+            // 비밀번호 찾기
+            // TODO: 보류로 하는게 나을것 같음. 일단 주요 기능 먼저 만들어보기
+            // Container(
+            //   margin: EdgeInsets.only(left: 190.w),
+            //   height: 16.h,
+            //   child: TextButton(
+            //       onPressed: () {},
+            //       style: OutlinedButton.styleFrom(
+            //         foregroundColor: Colors.white,
+            //       ),
+            //       // 버튼에 마우스오버를 했을 때 텍스트 색상 변경을 위함
+            //       onHover: (hover) {
+            //         setState(() {
+            //           _passwordButtonColor =
+            //               hover ? Color.fromRGBO(146, 1, 159, 1) : Colors.grey;
+            //         });
+            //       },
+            //       child: Text(
+            //         '비밀번호를 잊어버리셨나요?',
+            //         style:
+            //             TextStyle(color: _passwordButtonColor, fontSize: 10.w),
+            //       )),
+            // ),
             Container(
               margin: EdgeInsets.fromLTRB(20.w, 100.h, 20.w, 5.h),
               height: 55.h,
@@ -159,7 +170,7 @@ class _LoginState extends State<Login> {
                   '아직 계정이 없으신가요?',
                   style: TextStyle(color: _registerButtonColor, fontSize: 10.w),
                 )),
-            SizedBox(height: 120.h),
+            SizedBox(height: 130.h),
             Image.asset(
               'assets/logo.png',
               height: 33.h,

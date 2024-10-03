@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordCheckController =
       TextEditingController();
   String _selectedDate = '';
@@ -35,7 +36,7 @@ class _RegisterState extends State<Register> {
       body: Form(
         child: ListView(
           children: [
-            SizedBox(height: 110.h),
+            SizedBox(height: 80.h),
             // 이름 입력창
             Container(
               margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
@@ -82,6 +83,25 @@ class _RegisterState extends State<Register> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.grey),
                   labelText: '아이디',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // 전화번호 입력창
+            Container(
+              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
+              child: TextFormField(
+                controller: _phoneNumberController,
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(color: Colors.grey),
+                  labelText: '전화번호',
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -191,7 +211,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(height: 110.h),
+            SizedBox(height: 80.h),
             Image.asset(
               'assets/logo.png',
               height: 33.h,
