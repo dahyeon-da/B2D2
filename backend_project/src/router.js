@@ -10,7 +10,7 @@ router.get('/', webController.home);
 router.get('/page/:page', webController.page);
 router.get('/sitemap', webController.sitemap);
 
-router.get('/api/user/:id', apiUserController.userinfo);
+router.post('/api/user/login', apiUserController.login);
 router.post('/api/user/register', apiUserController.register);
 
 router.get('/api/feed', verify, apiFeedController.index);
