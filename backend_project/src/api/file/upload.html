@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple File Upload</title>
+</head>
+
+<body>
+  <h2>Upload Multiple Files</h2>
+  <form action="http://localhost:3000/api/image/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="files" multiple required> <!-- name이 files로 설정 -->
+    <button type="submit">Upload</button>
+  </form>
+</body>
+
+</html>

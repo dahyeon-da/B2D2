@@ -2,9 +2,13 @@ const express = require('express')
 const router = express.Router()
 const verify = require('./middleware/jwtVerify')
 
+const multer = require('multer');
+const upload = multer({ dest: 'public/storage' });
+
 const webController = require('./web/controller');
 const apiUserController = require('./api/user/userController');
 const apiFeedController = require('./api/board/boardController');
+const fileController = require('./api/file/fileController');
 
 router.get('/', webController.home);
 router.get('/page/:page', webController.page);
@@ -17,5 +21,7 @@ router.post('/api/feed/write', verify, apiFeedController.feedWrite);
 router.get('/api/feed/:id', verify, apiFeedController.show);
 router.post('/api/feed/:id', verify, apiFeedController.update);
 router.post('/api/feed/:id/delete', verify, apiFeedController.destroy);
+
+router.post('/api/image/upload', upload.array('files'), fileController.imageUpload);
 
 module.exports = router;
