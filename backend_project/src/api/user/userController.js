@@ -1,4 +1,4 @@
-const jwt = require('./jwt');
+const jwt = require('../../middleware/jwt');
 const { register, find, login, findMemberNum } = require('./userRepository');
 const crypto = require('crypto');
 const { StatusCodes, ReasonPhrases } = require('http-status-codes');

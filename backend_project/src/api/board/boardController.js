@@ -1,10 +1,6 @@
-const { boardWrite } = require('./boardRepository');
+const { boardWrite, boardShow } = require('./boardRepository');
 const { StatusCodes, ReasonPhrases } = require('http-status-codes');
 const { findMemberNum } = require('../user/userRepository');
-
-exports.index = (req, res) => {
-  res.send(`피드 리스트`);
-}
 
 exports.feedWrite = async (req, res) => {
 
@@ -15,7 +11,10 @@ exports.feedWrite = async (req, res) => {
 
   if (affectedRows > 0) {
     const data = {
-      boardWriter: memberInformation.memberName, boardWriterGroup: memberInformation.memberGroup, boardDate: boardDate, boardContent: boardContent
+      boardWriter: memberInformation.memberName,
+      boardWriterGroup: memberInformation.memberGroup,
+      boardDate: boardDate,
+      boardContent: boardContent
     }
     res.status(StatusCodes.CREATED)
     res.send({
@@ -34,8 +33,19 @@ exports.feedWrite = async (req, res) => {
   }
 }
 
-exports.boardShow = async (req, res) => {
+exports.feedShow = async (req, res) => {
 
+  const { } = req.body;
+
+  let { affectedRows, data } = await boardShow();
+
+  if (affectedRows > 0) {
+    res.status(StatusCodes.CREATED)
+    res.send({ code: StatusCodes.CREATED, httpStatus: ReasonPhrases.CREATED, message: '일지 리스트 조회에 성공했습니다.', data: data})
+  } else {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+    res.send({ code: StatusCodes.INTERNAL_SERVER_ERROR, httpStatus: ReasonPhrases.INTERNAL_SERVER_ERROR, message: '일지 조회에 실패했습니다.'})
+  }
 }
 
 exports.update = (req, res) => {

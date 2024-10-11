@@ -20,3 +20,15 @@ exports.pool = (queryString, params) => {
     });
   })
 }
+
+exports.query = (queryString, params) => {
+  return new Promise((resolve, reject) => {
+    connection.query(queryString, params, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};

@@ -18,7 +18,7 @@ router.post('/api/user/login', apiUserController.login);
 router.post('/api/user/register', apiUserController.register);
 
 router.post('/api/feed/write', verify, apiFeedController.feedWrite);
-router.get('/api/feed/list', verify, apiFeedController.boardShow);
+router.get('/api/feed/list', apiFeedController.feedShow);
 
 router.post('/api/image/upload', upload.array('files'), fileController.imageUpload);
 

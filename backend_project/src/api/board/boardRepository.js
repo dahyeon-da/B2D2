@@ -1,4 +1,4 @@
-const { pool } = require("../../data");
+const { pool, connection } = require("../../data");
 
 /**
  * 일지 작성
@@ -14,7 +14,6 @@ exports.boardWrite = async (boardWriter, boardWriterGroup, boardDate, boardConte
   ]);
 }
 
-const pool = require('../db');
 exports.boardShow = async () => {
   const query = `
     SELECT 
@@ -37,5 +36,15 @@ exports.boardShow = async () => {
     ORDER BY 
       b.boardNum DESC;
   `;
-  return await pool(query, []);
+  return new Promise((resolve, reject) => {
+    connection.query(query, [], (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve({
+        affectedRows: results.length,
+        data: results
+      });
+    });
+  });
 }
