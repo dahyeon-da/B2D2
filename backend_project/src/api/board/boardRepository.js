@@ -13,3 +13,29 @@ exports.boardWrite = async (boardWriter, boardWriterGroup, boardDate, boardConte
     boardWriter, boardWriterGroup, boardDate, boardContent
   ]);
 }
+
+const pool = require('../db');
+exports.boardShow = async () => {
+  const query = `
+    SELECT 
+      b.boardNum,
+      b.boardWriter,
+      b.boardWriterGroup,
+      b.boardDate,
+      b.boardContent,
+      GROUP_CONCAT(
+          CONCAT(i.fileNum) 
+          ORDER BY i.fileNum ASC
+          SEPARATOR ','
+      ) AS images
+    FROM 
+      board b
+    LEFT JOIN 
+      image i ON b.boardNum = i.boardNum
+    GROUP BY 
+      b.boardNum
+    ORDER BY 
+      b.boardNum DESC;
+  `;
+  return await pool(query, []);
+}
