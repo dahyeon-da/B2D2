@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frontend_project/src/screen/auth/groupSelect.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:intl/intl.dart';
 
 class Register extends StatefulWidget {
@@ -188,10 +188,10 @@ class _RegisterState extends State<Register> {
               height: 40.h,
               child: OutlinedButton(
                 onPressed: () {
-                  // 다음을 클릭하면 동아리 선택창으로 이동
+                  // 다음을 클릭하면 메인화면으로 이동
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => GroupSelect()));
+                        MaterialPageRoute(builder: (context) => Feedpage()));
                   });
                 },
                 child: Text(
