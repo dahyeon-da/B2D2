@@ -22,6 +22,9 @@ class _FeedpageState extends State<Feedpage> {
     'assets/instagram.png',
   ];
 
+  List<String> _groupList = ['B2D2', '지킴이', '달리'];
+  var _selectedValue = 'B2D2';
+
   @override
   void initState() {
     super.initState();
@@ -135,6 +138,43 @@ class _FeedpageState extends State<Feedpage> {
                     ],
                   ),
                 ),
+                SizedBox(height: 10.h),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10.w, 10.h, 170.w, 10.h),
+                  color: Color.fromRGBO(217, 217, 217, 1),
+                  child: Container(
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButton(
+                        itemHeight: 48.0,
+                        underline: SizedBox.shrink(),
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        focusColor: Colors.white,
+                        dropdownColor: Colors.white,
+                        value: _selectedValue,
+                        items: _groupList.map(
+                          (value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Center(
+                                child: Text(
+                                  value,
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedValue = value!;
+                          });
+                        }),
+                  ),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     boxShadow: [
@@ -185,7 +225,6 @@ class _FeedpageState extends State<Feedpage> {
                                     ),
                                   ),
                                 ],
-                                
                               ),
                               SizedBox(height: 5.h),
                             ],
@@ -258,7 +297,6 @@ class _FeedpageState extends State<Feedpage> {
                               },
                             ),
                           ),
-                          
                         ],
                       ),
                       Padding(
