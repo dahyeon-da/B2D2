@@ -1,6 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/widget/imageView.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Feedpage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _FeedpageState extends State<Feedpage> {
   late final PageController _imageController;
   final List<String> imageAssets = [
     'assets/instagram.png',
-    'assets/logo.png',
+    'assets/feedEx.png',
     'assets/instagram.png',
     'assets/instagram.png',
     'assets/instagram.png',
@@ -34,6 +35,7 @@ class _FeedpageState extends State<Feedpage> {
 
   @override
   Widget build(BuildContext context) {
+    // 화면에 맞춰 위젯과 텍스트 크기를 조절할 수 있는 반응형 초기화 코드
     ScreenUtil.init(context, designSize: Size(375, 812), minTextAdapt: true);
 
     return Scaffold(
@@ -67,32 +69,51 @@ class _FeedpageState extends State<Feedpage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '이다닷',
-                                    style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '메카트로닉스',
-                                    style: TextStyle(fontSize: 12.sp),
-                                  )
-                                ],
+                              Container(
+                                margin: EdgeInsets.only(left: 5.w),
+                                child: Text(
+                                  '이다닷',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
+                              Container(
+                                margin: EdgeInsets.only(left: 5.w),
+                                child: Text(
+                                  '메카트로닉스',
+                                  style: TextStyle(fontSize: 12.sp),
+                                ),
+                              ),
+                              SizedBox(height: 5.h),
                             ],
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return FractionallySizedBox(
+                                    heightFactor: 0.8,
+                                    child: Imageview(imageAssets: imageAssets),
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.image_outlined),
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                           ),
                         ],
                       ),
                       Stack(
                         children: [
                           Container(
-                            height: 480.h,
+                            height: 370.w,
                             child: PageView.builder(
                               controller: _imageController,
                               itemCount: imageAssets.length,
@@ -107,7 +128,7 @@ class _FeedpageState extends State<Feedpage> {
                           ),
                           Positioned(
                             left: 5,
-                            top: 190.w,
+                            top: 170.h,
                             child: IconButton(
                               icon: const Icon(Icons.arrow_back),
                               onPressed: () {
@@ -123,7 +144,7 @@ class _FeedpageState extends State<Feedpage> {
                           ),
                           Positioned(
                             right: 5,
-                            top: 190.w,
+                            top: 170.h,
                             child: IconButton(
                               icon: const Icon(Icons.arrow_forward),
                               onPressed: () {
