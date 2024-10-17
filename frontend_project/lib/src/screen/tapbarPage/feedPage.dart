@@ -1,6 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
 import 'package:frontend_project/src/widget/imageView.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -50,6 +51,90 @@ class _FeedpageState extends State<Feedpage> {
       body: imageAssets.isNotEmpty
           ? ListView(
               children: [
+                SizedBox(height: 6.h),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 10.w),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: ClipRRect(
+                              borderRadius: BorderRadius.circular(45.w),
+                              child: Image.asset(
+                                'assets/instagram.png',
+                                height: 90.w,
+                                width: 90.w,
+                              ),
+                            ),
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                          Text(
+                            '시흥청소년 재단 소개',
+                            style: TextStyle(fontSize: 15.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(width: 20.w),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: ClipRRect(
+                              borderRadius: BorderRadius.circular(45.w),
+                              child: Image.asset(
+                                'assets/instagram.png',
+                                height: 90.w,
+                                width: 90.w,
+                              ),
+                            ),
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                          Text(
+                            '시화호 청소년 환경\n감시단 소개',
+                            style: TextStyle(fontSize: 15.sp),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                      SizedBox(width: 20.w),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              // 버튼을 클릭하면 B2D2 소개글 창으로 이동
+                              Future.delayed(Duration.zero, () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => B2d2Introduce()));
+                              });
+                            },
+                            icon: ClipRRect(
+                              borderRadius: BorderRadius.circular(45.w),
+                              child: Image.asset(
+                                'assets/instagram.png',
+                                height: 90.w,
+                                width: 90.w,
+                              ),
+                            ),
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                          Text(
+                            '디지털환경감시단\nB2D2 소개',
+                            style: TextStyle(fontSize: 15.sp),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                      SizedBox(width: 10.w)
+                    ],
+                  ),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     boxShadow: [
@@ -75,18 +160,32 @@ class _FeedpageState extends State<Feedpage> {
                               Container(
                                 margin: EdgeInsets.only(left: 5.w),
                                 child: Text(
-                                  '이다닷',
+                                  '2024-06-14',
                                   style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(left: 5.w),
-                                child: Text(
-                                  '메카트로닉스',
-                                  style: TextStyle(fontSize: 12.sp),
-                                ),
+                              Row(
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(left: 5.w),
+                                      child: Text(
+                                        '이다현',
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5.w),
+                                    child: Text(
+                                      '메카트로닉스',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
+                                  ),
+                                ],
+                                
                               ),
                               SizedBox(height: 5.h),
                             ],
@@ -113,7 +212,7 @@ class _FeedpageState extends State<Feedpage> {
                       Stack(
                         children: [
                           Container(
-                            height: 370.w,
+                            height: 380.w,
                             child: PageView.builder(
                               controller: _imageController,
                               itemCount: imageAssets.length,
@@ -128,7 +227,7 @@ class _FeedpageState extends State<Feedpage> {
                           ),
                           Positioned(
                             left: 5,
-                            top: 170.h,
+                            top: 200.h,
                             child: IconButton(
                               icon: const Icon(Icons.arrow_back),
                               onPressed: () {
@@ -144,7 +243,7 @@ class _FeedpageState extends State<Feedpage> {
                           ),
                           Positioned(
                             right: 5,
-                            top: 170.h,
+                            top: 200.h,
                             child: IconButton(
                               icon: const Icon(Icons.arrow_forward),
                               onPressed: () {
@@ -172,17 +271,6 @@ class _FeedpageState extends State<Feedpage> {
                             dotWidth: 4,
                             activeDotColor:
                                 const Color.fromARGB(255, 131, 226, 255),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.only(left: 8.w),
-                        child: Text(
-                          '2024-06-14',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

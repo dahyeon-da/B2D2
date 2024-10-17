@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class B2d2Introduce extends StatelessWidget {
   const B2d2Introduce({super.key});
@@ -125,10 +126,15 @@ class B2d2Introduce extends StatelessWidget {
                   ),
                   SizedBox(width: 10.w),
                   IconButton(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      'assets/instagram.png',
-                      height: 40.h,
+                    onPressed: () {
+                      launchUrl(Uri.parse('https://github.com/dahyeon-da'));
+                    },
+                    icon: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.asset(
+                        'assets/github.jpg',
+                        height: 40.h,
+                      ),
                     ),
                     hoverColor: Colors.transparent,
                   ),
