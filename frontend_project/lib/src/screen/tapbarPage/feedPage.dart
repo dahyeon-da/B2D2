@@ -53,88 +53,87 @@ class _FeedpageState extends State<Feedpage> {
               children: [
                 SizedBox(height: 6.h),
                 // 시흥청소년 재단, 시화호 청소년 환경감시단, 디지털 환경감시단 소개 부분
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 10.w),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: ClipRRect(
-                              borderRadius: BorderRadius.circular(45.w),
-                              child: Image.asset(
-                                'assets/instagram.png',
-                                height: 90.w,
-                                width: 90.w,
-                              ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(height: 5.h),
+                        IconButton(
+                          onPressed: () {},
+                          icon: ClipRRect(
+                            borderRadius: BorderRadius.circular(45.w),
+                            child: Image.asset(
+                              'assets/instagram.png',
+                              height: 70.w,
+                              width: 70.w,
                             ),
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
                           ),
-                          Text(
-                            '시흥청소년 재단 소개',
-                            style: TextStyle(fontSize: 15.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 20.w),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: ClipRRect(
-                              borderRadius: BorderRadius.circular(45.w),
-                              child: Image.asset(
-                                'assets/instagram.png',
-                                height: 90.w,
-                                width: 90.w,
-                              ),
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                        ),
+                        Text(
+                          '시흥청소년 재단 소개',
+                          style: TextStyle(fontSize: 11.sp),
+                        )
+                      ],
+                    ),
+                    SizedBox(width: 20.w),
+                    Column(
+                      children: [
+                        SizedBox(height: 5.h),
+                        IconButton(
+                          onPressed: () {},
+                          icon: ClipRRect(
+                            borderRadius: BorderRadius.circular(45.w),
+                            child: Image.asset(
+                              'assets/instagram.png',
+                              height: 70.w,
+                              width: 70.w,
                             ),
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
                           ),
-                          Text(
-                            '시화호 청소년 환경\n감시단 소개',
-                            style: TextStyle(fontSize: 15.sp),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 20.w),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              // 버튼을 클릭하면 B2D2 소개글 창으로 이동
-                              Future.delayed(Duration.zero, () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => B2d2Introduce()));
-                              });
-                            },
-                            icon: ClipRRect(
-                              borderRadius: BorderRadius.circular(45.w),
-                              child: Image.asset(
-                                'assets/instagram.png',
-                                height: 90.w,
-                                width: 90.w,
-                              ),
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                        ),
+                        Text(
+                          '시화호 청소년 환경\n감시단 소개',
+                          style: TextStyle(fontSize: 11.sp),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                    SizedBox(width: 20.w),
+                    Column(
+                      children: [
+                        SizedBox(height: 5.h),
+                        IconButton(
+                          onPressed: () {
+                            // 버튼을 클릭하면 B2D2 소개글 창으로 이동
+                            Future.delayed(Duration.zero, () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => B2d2Introduce()));
+                            });
+                          },
+                          icon: ClipRRect(
+                            borderRadius: BorderRadius.circular(45.w),
+                            child: Image.asset(
+                              'assets/instagram.png',
+                              height: 70.w,
+                              width: 70.w,
                             ),
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
                           ),
-                          Text(
-                            '디지털환경감시단\nB2D2 소개',
-                            style: TextStyle(fontSize: 15.sp),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 10.w)
-                    ],
-                  ),
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                        ),
+                        Text(
+                          '디지털환경감시단\nB2D2 소개',
+                          style: TextStyle(fontSize: 11.sp),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10.h),
                 Container(
@@ -186,6 +185,7 @@ class _FeedpageState extends State<Feedpage> {
                     color: Colors.white,
                   ),
                   width: double.infinity,
+                  // 피드
                   child: Column(
                     children: [
                       SizedBox(height: 10.h),
@@ -200,7 +200,7 @@ class _FeedpageState extends State<Feedpage> {
                                 child: Text(
                                   '2024-06-14',
                                   style: TextStyle(
-                                    fontSize: 17.sp,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -212,14 +212,14 @@ class _FeedpageState extends State<Feedpage> {
                                       child: Text(
                                         '이다현',
                                         style: TextStyle(
-                                            fontSize: 16.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.bold),
                                       )),
                                   Container(
                                     margin: EdgeInsets.only(left: 5.w),
                                     child: Text(
                                       '메카트로닉스',
-                                      style: TextStyle(fontSize: 16.sp),
+                                      style: TextStyle(fontSize: 14.sp),
                                     ),
                                   ),
                                 ],
@@ -263,36 +263,126 @@ class _FeedpageState extends State<Feedpage> {
                               },
                             ),
                           ),
-                          Positioned(
-                            left: 5,
-                            top: 200.h,
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_back),
-                              onPressed: () {
-                                if (_imageController.hasClients &&
-                                    _imageController.page! > 0) {
-                                  _imageController.previousPage(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  );
-                                }
-                              },
-                            ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SmoothPageIndicator(
+                          controller: _imageController,
+                          count: imageAssets.length,
+                          effect: SwapEffect(
+                            dotHeight: 4,
+                            dotWidth: 4,
+                            activeDotColor:
+                                const Color.fromARGB(255, 131, 226, 255),
                           ),
-                          Positioned(
-                            right: 5,
-                            top: 200.h,
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_forward),
-                              onPressed: () {
-                                if (_imageController.hasClients &&
-                                    _imageController.page! <
-                                        imageAssets.length - 1) {
-                                  _imageController.nextPage(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Container(
+                        margin: EdgeInsets.only(left: 8.w),
+                        child: ExpandableText(
+                          '2024-09-20\n 조류 관찰일지입니다.ㅇㅇ새, ㅁㅁ새, ㄱㄱ새, ㅎㅎ새, ㅌㅌ새를 관찰했습니다. 다음 활동에는 ㄹㄹ새, ㄴㄴ새, ㅈㅈ새를 관찰할 예정입니다.',
+                          style: TextStyle(fontSize: 13.sp),
+                          maxLines: 3,
+                          expandText: '더보기',
+                          collapseText: '접기',
+                          linkColor: const Color.fromARGB(255, 2, 71, 128),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10.h),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.7),
+                        blurRadius: 5.0,
+                        spreadRadius: 0.0,
+                        offset: const Offset(0, 7),
+                      )
+                    ],
+                    color: Colors.white,
+                  ),
+                  width: double.infinity,
+                  // 피드
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 5.w),
+                                child: Text(
+                                  '2024-06-14',
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(left: 5.w),
+                                      child: Text(
+                                        '이다현',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5.w),
+                                    child: Text(
+                                      '메카트로닉스',
+                                      style: TextStyle(fontSize: 14.sp),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5.h),
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return FractionallySizedBox(
+                                    heightFactor: 0.8,
+                                    child: Imageview(imageAssets: imageAssets),
                                   );
-                                }
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.image_outlined),
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: 350.w,
+                            width: 350.w,
+                            child: PageView.builder(
+                              controller: _imageController,
+                              itemCount: imageAssets.length,
+                              itemBuilder: (context, index) {
+                                return Image.asset(
+                                  imageAssets[index],
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                );
                               },
                             ),
                           ),
@@ -316,7 +406,7 @@ class _FeedpageState extends State<Feedpage> {
                         margin: EdgeInsets.only(left: 8.w),
                         child: ExpandableText(
                           '2024-09-20\n 조류 관찰일지입니다.ㅇㅇ새, ㅁㅁ새, ㄱㄱ새, ㅎㅎ새, ㅌㅌ새를 관찰했습니다. 다음 활동에는 ㄹㄹ새, ㄴㄴ새, ㅈㅈ새를 관찰할 예정입니다.',
-                          style: TextStyle(fontSize: 17.sp),
+                          style: TextStyle(fontSize: 13.sp),
                           maxLines: 3,
                           expandText: '더보기',
                           collapseText: '접기',
@@ -324,10 +414,18 @@ class _FeedpageState extends State<Feedpage> {
                         ),
                       ),
                       SizedBox(height: 10.h),
+                      
                     ],
                   ),
                 ),
                 SizedBox(height: 20.h),
+                Container(
+                  height: 30.w,
+                  child: Image.asset(
+                    'assets/logo.png',
+                  ),
+                ),
+                SizedBox(height: 10.h)
               ],
             )
           : const Center(child: Text('이미지가 없습니다')),

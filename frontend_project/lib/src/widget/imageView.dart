@@ -49,39 +49,6 @@ class _ImageviewState extends State<Imageview> {
               );
             },
           ),
-          Positioned(
-            left: 16,
-            top: 300.h,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back,
-                  color: Color.fromARGB(255, 0, 0, 0)),
-              onPressed: () {
-                if (_pageController.hasClients && _pageController.page! > 0) {
-                  _pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }
-              },
-            ),
-          ),
-          Positioned(
-            right: 16,
-            top: 300.h,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_forward,
-                  color: Color.fromARGB(255, 0, 0, 0)),
-              onPressed: () {
-                if (_pageController.hasClients &&
-                    _pageController.page! < widget.imageAssets.length - 1) {
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }
-              },
-            ),
-          ),
         ],
       ),
     );
