@@ -2,6 +2,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
+import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:frontend_project/src/widget/feed_write_floating_action_button.dart';
 import 'package:frontend_project/src/widget/imageView.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -42,22 +43,16 @@ class _FeedpageState extends State<Feedpage> {
   Widget build(BuildContext context) {
     // 화면에 맞춰 위젯과 텍스트 크기를 조절할 수 있는 반응형 초기화 코드
     ScreenUtil.init(context, designSize: Size(375, 812), minTextAdapt: true);
-
+    
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          Image.asset('assets/logo.png', height: 23.h),
-          SizedBox(width: 10.w),
-        ],
-        backgroundColor: const Color.fromRGBO(245, 208, 67, 1),
-      ),
+      appBar: App_bar(),
       floatingActionButton: FeedWriteFloatingActionButton(),
       body: imageAssets.isNotEmpty
           ? ListView(
               children: [
                 SizedBox(height: 6.h),
-                // 시흥청소년 재단, 시화호 청소년 환경 감시단, 디지털 환경감시단 소개 부분
+                // 시흥청소년 재단, 시화호 청소년 환경감시단, 디지털 환경감시단 소개 부분
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
