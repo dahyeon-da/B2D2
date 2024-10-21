@@ -2,6 +2,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
+import 'package:frontend_project/src/widget/feed_write_floating_action_button.dart';
 import 'package:frontend_project/src/widget/imageView.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -51,10 +52,12 @@ class _FeedpageState extends State<Feedpage> {
         ],
         backgroundColor: const Color.fromRGBO(245, 208, 67, 1),
       ),
+      floatingActionButton: FeedWriteFloatingActionButton(),
       body: imageAssets.isNotEmpty
           ? ListView(
               children: [
                 SizedBox(height: 6.h),
+                // 시흥청소년 재단, 시화호 청소년 환경 감시단, 디지털 환경감시단 소개 부분
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -251,7 +254,8 @@ class _FeedpageState extends State<Feedpage> {
                       Stack(
                         children: [
                           Container(
-                            height: 380.w,
+                            height: 350.w,
+                            width: 350.w,
                             child: PageView.builder(
                               controller: _imageController,
                               itemCount: imageAssets.length,
@@ -317,7 +321,7 @@ class _FeedpageState extends State<Feedpage> {
                         margin: EdgeInsets.only(left: 8.w),
                         child: ExpandableText(
                           '2024-09-20\n 조류 관찰일지입니다.ㅇㅇ새, ㅁㅁ새, ㄱㄱ새, ㅎㅎ새, ㅌㅌ새를 관찰했습니다. 다음 활동에는 ㄹㄹ새, ㄴㄴ새, ㅈㅈ새를 관찰할 예정입니다.',
-                          style: TextStyle(fontSize: 15.sp),
+                          style: TextStyle(fontSize: 17.sp),
                           maxLines: 3,
                           expandText: '더보기',
                           collapseText: '접기',
