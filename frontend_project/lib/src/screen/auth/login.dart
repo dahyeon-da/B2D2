@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/screen/auth/register.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
+import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -10,14 +13,30 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final userController = Get.put(UserController());
   // 로그인 시 필요한 formkey, 텍스트 입력시 입력한 아이디, 비밀번호 파악을 위한 controller 변수 생성
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // 로그인 버튼을 누를 때 동작할 함수
+  _submitForm() async {
+    final String memberId = _idController.text;
+    final String memberPassword = _passwordController.text;
+
+    bool result = await userController.login(memberId, memberPassword);
+
+    if (result) {
+      // 로그인 성공 시 피드 작성 페이지로 이동
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Feedwritepage(),
+          ));
+    }
+  }
+
   // 텍스트 버튼에서 텍스트 색상 변경을 위한 변수 생성
-  Color _idButtonColor = Colors.grey;
-  Color _passwordButtonColor = Colors.grey;
   Color _registerButtonColor = Colors.grey;
 
   @override
@@ -128,7 +147,7 @@ class _LoginState extends State<Login> {
               margin: EdgeInsets.fromLTRB(20.w, 100.h, 20.w, 5.h),
               height: 55.h,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: _submitForm,
                 child: Text(
                   '로그인',
                   style: TextStyle(

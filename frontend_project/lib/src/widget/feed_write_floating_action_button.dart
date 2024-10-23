@@ -24,7 +24,7 @@ class FeedWriteFloatingActionButton extends StatelessWidget {
           // TODO: 로그인이 되어있는지 확인하고 로그인이 안되어있으면 로그인 창으로 이동.
           Future.delayed(Duration.zero, () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Feedwritepage()));
+                .push(MaterialPageRoute(builder: (context) => Login()));
           });
         },
         color: Color.fromRGBO(97, 136, 84, 1),
