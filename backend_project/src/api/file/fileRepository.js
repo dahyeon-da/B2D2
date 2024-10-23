@@ -20,7 +20,7 @@ exports.uploadImage = async (files) => {
       }
 
       const query = `INSERT INTO image (fileName, filePath, fileSize, boardNum) VALUES (?, ?, ?, ?)`;
-      const result = await pool(query, [file.filename, file.path, file.size, boardNum]);
+      const result = await pool(query, [file.originalname, file.path, file.size, boardNum]);
       
       results.push(result);
     } catch (error) {
@@ -32,4 +32,8 @@ exports.uploadImage = async (files) => {
   return results;
 }
 
+exports.show = async (imageNumber) => {
+    const query =  `SELECT * FROM image WHERE fileNum = ?`;
 
+    return await pool(query, [imageNumber]);
+}
