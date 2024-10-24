@@ -22,7 +22,6 @@ final GetStorage _storage = GetStorage();
 class _FeedpageState extends State<Feedpage> {
   final feedConnect = Get.put(FeedConnect());
   final userController = Get.put(UserController());
-  bool isLogin = false;
 
   bool isLoading = true;
   List<Map<String, dynamic>> feedData = [];
@@ -85,7 +84,7 @@ class _FeedpageState extends State<Feedpage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: App_bar(),
-        floatingActionButton: FeedWriteFloatingActionButton(isLogin: isLogin),
+        floatingActionButton: FeedWriteFloatingActionButton(),
         body: isLoading
             ? Scaffold(
                 backgroundColor: Colors.white,

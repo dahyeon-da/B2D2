@@ -18,11 +18,10 @@ class UserConnect extends GetConnect {
     Response response = await post('/api/user/login',
         {'memberId': memberId, 'memberPassword': memberPassword});
     Map<String, dynamic> body = response.body;
-    print(body);
 
     if (body['code'] != 201) {
       throw Exception(body['code']);
     }
-    return body['data']['access_token'];
+    return body['data'];
   }
 }

@@ -4,17 +4,16 @@ const { findMemberNum } = require('../user/userRepository');
 
 exports.feedWrite = async (req, res) => {
 
-  const { boardDate, boardContent, memberId } = req.body;
+  const { memberName, memberGroup, boardDate, boardContent } = req.body;
 
-  let memberInformation = await findMemberNum(memberId);
-  let { affectedRows } = await boardWrite(memberInformation.memberName, memberInformation.memberGroup, boardDate, boardContent);
+  let { affectedRows } = await boardWrite(memberName, memberGroup, boardDate, boardContent);
 
   if (affectedRows > 0) {
     const data = {
-      boardWriter: memberInformation.memberName,
-      boardWriterGroup: memberInformation.memberGroup,
-      boardDate: boardDate,
-      boardContent: boardContent
+      feedWriteName: memberName,
+      feedWriteGroup: memberGroup,
+      feedWriteDate: boardDate,
+      feedWriteContent: boardContent
     }
     res.status(StatusCodes.CREATED)
     res.send({

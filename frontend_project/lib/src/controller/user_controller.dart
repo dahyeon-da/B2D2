@@ -15,13 +15,14 @@ class UserController extends GetxController {
   // 로그인을 시도하는 함수
   Future login(String memberId, String memberPassword) async {
     try {
-      String token = await userConnection.sendLogin(memberId, memberPassword);
+      Map<String, dynamic> result =
+          await userConnection.sendLogin(memberId, memberPassword);
       await GetStorage.init();
-      await _storage.write('access_token', token);
-      return true;
+      await _storage.write('access_token', result['access_token']);
+      return result;
     } catch (e) {
       print('Error: $e');
-      return false;
+      return null;
     }
   }
 }

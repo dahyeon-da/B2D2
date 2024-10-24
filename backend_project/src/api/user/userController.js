@@ -3,6 +3,7 @@ const { register, find, login, findMemberNum } = require('./userRepository');
 const crypto = require('crypto');
 const { StatusCodes, ReasonPhrases } = require('http-status-codes');
 
+// 로그인
 exports.login = async (req, res) => {
   
   const { memberId, memberPassword } = req.body;
@@ -21,6 +22,7 @@ exports.login = async (req, res) => {
       memberId: memberId,
       memberName: memberInformation.memberName,
       memberPhoneNumber: memberInformation.memberPhoneNumber,
+      memberGroup: memberInformation.memberGroup,
       access_token: token
     }
     res.status(StatusCodes.CREATED)
@@ -28,6 +30,7 @@ exports.login = async (req, res) => {
   }
 }
 
+// 회원가입
 exports.register = async (req, res) => {
 
   const { memberId, memberPassword, memberName, memberPhoneNumber, memberGroup } = req.body;

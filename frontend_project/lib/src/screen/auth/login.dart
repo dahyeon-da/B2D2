@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
+import 'package:frontend_project/src/model/feedModel.dart';
+import 'package:frontend_project/src/model/userModel.dart';
 import 'package:frontend_project/src/screen/auth/register.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
@@ -24,11 +27,14 @@ class _LoginState extends State<Login> {
     final String memberId = _idController.text;
     final String memberPassword = _passwordController.text;
 
-    bool result = await userController.login(memberId, memberPassword);
+    Map<String, dynamic> results =
+        await userController.login(memberId, memberPassword);
+    Feedmodel userInformation =
+        Feedmodel(results['memberName'], results['memberGroup']);
 
-    if (result) {
-      // 로그인 성공 시 이전페이지로 이동
-      Get.back(result: true);
+    if (results != null && results.isNotEmpty) {
+      // 로그인 성공 시 피드 작성 페이지로 이동
+      Get.to(Feedwritepage(userInformation: userInformation));
     }
   }
 
