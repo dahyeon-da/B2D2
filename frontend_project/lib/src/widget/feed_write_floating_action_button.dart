@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/auth/login.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
 
 class FeedWriteFloatingActionButton extends StatefulWidget {
+  final bool isLogin;
 
-  const FeedWriteFloatingActionButton({super.key});
+  const FeedWriteFloatingActionButton({super.key, required this.isLogin});
 
   @override
   State<FeedWriteFloatingActionButton> createState() =>
@@ -28,10 +31,13 @@ class _FeedWriteFloatingActionButtonState
         iconSize: 50,
         onPressed: () {
           // 버튼을 클릭하면 피드 작성 페이지로 이동하기
-          // TODO: 로그인이 되어있는지 확인하고 로그인이 안되어있으면 로그인 창으로 이동.
+          // 로그인이 되어있는지 확인하고 로그인이 안되어있으면 로그인 창으로 이동.
           Future.delayed(Duration.zero, () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Login()));
+                .push(MaterialPageRoute(
+                builder: (context) => widget.isLogin
+                    ? Feedwritepage(userInformation: Feedmodel('', ''))
+                    : Login()));
           });
         },
         color: Color.fromRGBO(97, 136, 84, 1),

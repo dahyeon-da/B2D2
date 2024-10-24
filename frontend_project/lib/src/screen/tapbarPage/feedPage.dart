@@ -25,9 +25,9 @@ class _FeedpageState extends State<Feedpage> {
 
   bool isLoading = true;
   List<Map<String, dynamic>> feedData = [];
+  bool isLogin = false;
 
   // 페이지가 열릴때마다 로그인 여부를 확인
-  
 
   @override
   void initState() {
@@ -47,6 +47,7 @@ class _FeedpageState extends State<Feedpage> {
       isLoading = true;
     });
     List<dynamic> results = await feedConnect.FeedList();
+    isLogin = await userController.isLogin();
 
     feedData = results.map((result) {
       return {
@@ -84,7 +85,7 @@ class _FeedpageState extends State<Feedpage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: App_bar(),
-        floatingActionButton: FeedWriteFloatingActionButton(),
+        floatingActionButton: FeedWriteFloatingActionButton(isLogin: isLogin),
         body: isLoading
             ? Scaffold(
                 backgroundColor: Colors.white,

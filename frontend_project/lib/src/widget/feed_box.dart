@@ -73,7 +73,7 @@ class _FeedBoxState extends State<FeedBox> {
                           Container(
                             margin: EdgeInsets.only(left: 5.w),
                             child: Text(
-                              '메카트로닉스',
+                              '${item['boardWriterGroup']}',
                               style: TextStyle(fontSize: 14.sp),
                             ),
                           ),
