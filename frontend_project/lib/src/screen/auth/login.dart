@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/screen/auth/register.dart';
-import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
@@ -27,12 +27,8 @@ class _LoginState extends State<Login> {
     bool result = await userController.login(memberId, memberPassword);
 
     if (result) {
-      // 로그인 성공 시 피드 작성 페이지로 이동
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Feedwritepage(),
-          ));
+      // 로그인 성공 시 이전페이지로 이동
+      Get.back(result: true);
     }
   }
 

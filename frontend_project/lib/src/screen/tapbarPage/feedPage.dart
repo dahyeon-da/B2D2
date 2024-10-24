@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frontend_project/src/connect/feedConnect.dart';
+import 'package:frontend_project/src/connect/feed_connect.dart';
+import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:frontend_project/src/widget/feed_box.dart';
 import 'package:frontend_project/src/widget/feed_write_floating_action_button.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-
-final feedConnect = Get.put(FeedConnect());
 
 class Feedpage extends StatefulWidget {
   const Feedpage({super.key});
@@ -17,9 +17,18 @@ class Feedpage extends StatefulWidget {
   State<Feedpage> createState() => _FeedpageState();
 }
 
+final GetStorage _storage = GetStorage();
+
 class _FeedpageState extends State<Feedpage> {
+  final feedConnect = Get.put(FeedConnect());
+  final userController = Get.put(UserController());
+  bool isLogin = false;
+
   bool isLoading = true;
   List<Map<String, dynamic>> feedData = [];
+
+  // 페이지가 열릴때마다 로그인 여부를 확인
+  
 
   @override
   void initState() {
@@ -76,7 +85,7 @@ class _FeedpageState extends State<Feedpage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: App_bar(),
-        floatingActionButton: FeedWriteFloatingActionButton(),
+        floatingActionButton: FeedWriteFloatingActionButton(isLogin: isLogin),
         body: isLoading
             ? Scaffold(
                 backgroundColor: Colors.white,

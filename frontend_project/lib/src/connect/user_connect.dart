@@ -1,8 +1,5 @@
 import 'package:frontend_project/shared/global.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-final GetStorage _storage = GetStorage();
 
 // 회원 관련 통신 담당 클래스
 class UserConnect extends GetConnect {
