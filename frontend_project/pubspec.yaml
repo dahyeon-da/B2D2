@@ -74,6 +74,7 @@ flutter:
     - assets/feedEx.png
     - assets/github.jpg
     - assets/no_photo.png
+    - assets/modify.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

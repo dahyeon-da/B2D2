@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
+import 'package:frontend_project/src/screen/feed/feedModify.dart';
+import 'package:get/get.dart';
 
 class FeedBox extends StatefulWidget {
   final List<Map<String, dynamic>> feedData;
@@ -82,6 +84,15 @@ class _FeedBoxState extends State<FeedBox> {
                       SizedBox(height: 5.h),
                     ],
                   ),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Feedmodify())),
+                    icon: Image.asset(
+                      'assets/modify.png',
+                      width: 30.h,
+                    ),
+                    highlightColor: Colors.transparent,
+                  )
                 ],
               ),
               SizedBox(
