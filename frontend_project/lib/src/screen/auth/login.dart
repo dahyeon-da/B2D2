@@ -188,7 +188,7 @@ class _LoginState extends State<Login> {
                   });
                 },
                 child: Text(
-                  '아직 계정이 없으신가요?',
+                  '아직 계정이 없으신가요? (회원가입)',
                   style: TextStyle(color: _registerButtonColor, fontSize: 10.w),
                 )),
             SizedBox(height: 130.h),

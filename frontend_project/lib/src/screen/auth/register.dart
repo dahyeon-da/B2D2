@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
 import 'package:intl/intl.dart';
 
 class Register extends StatefulWidget {
@@ -22,6 +24,9 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   String _selectedDate = '';
 
+  List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
+  var _selectedValue = 'B2D2';
+
   @override
   Widget build(BuildContext context) {
     // 화면에 맞춰 위젯과 텍스트 크기를 조절할 수 있는 반응형 초기화 코드
@@ -37,44 +42,6 @@ class _RegisterState extends State<Register> {
         child: ListView(
           children: [
             SizedBox(height: 80.h),
-            // 이름 입력창
-            Container(
-              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
-              child: TextFormField(
-                controller: _nicknameController,
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: '닉네임',
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // 닉네임 입력창
-            Container(
-              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
-              child: TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: '이름',
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
             // 아이디 입력창
             Container(
               margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
@@ -83,25 +50,6 @@ class _RegisterState extends State<Register> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.grey),
                   labelText: '아이디',
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // 전화번호 입력창
-            Container(
-              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
-              child: TextFormField(
-                controller: _phoneNumberController,
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: '전화번호',
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -153,34 +101,104 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.only(left: 20.w, top: 3.w),
-                  child: Text(
-                    '생년월일',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 9.w, color: Colors.grey),
+            // 이름 입력창
+            Container(
+              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
+              child: TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(color: Colors.grey),
+                  labelText: '이름',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        _selectedDate,
-                        style: TextStyle(fontSize: 14.w),
-                      ),
-                      IconButton(
-                        onPressed: () => _selectDate(context),
-                        icon: Icon(Icons.date_range),
-                      ),
-                    ],
+              ),
+            ),
+            // 전화번호 입력창
+            Container(
+              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 10.h),
+              child: TextFormField(
+                controller: _phoneNumberController,
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(color: Colors.grey),
+                  labelText: '전화번호',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
-              ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: 0.7, color: Colors.grey))),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      '생년월일',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 9.w, color: Colors.grey),
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          _selectedDate,
+                          style: TextStyle(fontSize: 14.w),
+                        ),
+                        IconButton(
+                          onPressed: () => _selectDate(context),
+                          icon: Icon(Icons.date_range),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // 동아리 선택
+            Container(
+              margin: EdgeInsets.only(left: 20.w, right: 20.w),
+              child: DropdownButton(
+                  itemHeight: 48.0,
+                  underline: SizedBox.shrink(),
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  isExpanded: true,
+                  alignment: Alignment.centerLeft,
+                  focusColor: Colors.white,
+                  dropdownColor: Colors.white,
+                  value: _selectedValue,
+                  items: _groupList.map(
+                    (value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(
+                          value,
+                        ),
+                      );
+                    },
+                  ).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedValue = value!;
+                    });
+                  }),
             ),
             Container(
               padding: EdgeInsets.only(left: 280.w),
@@ -191,13 +209,16 @@ class _RegisterState extends State<Register> {
                   // 다음을 클릭하면 메인화면으로 이동
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Feedpage()));
+                        MaterialPageRoute(
+                        builder: (context) => Feedwritepage(
+                              userInformation: Feedmodel('이다현', 'B2D2'),
+                            )));
                   });
                 },
                 child: Text(
                   '다음',
                   style: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
@@ -211,7 +232,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(height: 80.h),
+            SizedBox(height: 100.h),
             Image.asset(
               'assets/logo.png',
               height: 33.h,

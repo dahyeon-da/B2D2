@@ -70,7 +70,7 @@ class _FeedpageState extends State<Feedpage> {
 
   late final PageController _imageController;
 
-  List<String> _groupList = ['B2D2', '지킴이', '달리'];
+  List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
   var _selectedValue = 'B2D2';
 
   @override
