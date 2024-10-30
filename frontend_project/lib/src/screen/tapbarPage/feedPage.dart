@@ -119,10 +119,15 @@ class _FeedpageState extends State<Feedpage> {
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (context) => Siheungintroduce())),
-                            icon: ClipRRect(
-                              borderRadius: BorderRadius.circular(45.w),
+                            icon: Container(
+                              height: 70.w,
+                              width: 70.w,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(35.w),
+                              ),
                               child: Image.asset(
-                                'assets/instagram.png',
+                                'assets/siheung_logo.png',
                                 height: 70.w,
                                 width: 70.w,
                               ),
@@ -145,10 +150,12 @@ class _FeedpageState extends State<Feedpage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         Environmentalmonitoringintroduce())),
-                            icon: ClipRRect(
-                              borderRadius: BorderRadius.circular(45.w),
+                            icon: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(45.w),
+                              ),
                               child: Image.asset(
-                                'assets/instagram.png',
+                                'assets/sihwaho.png',
                                 height: 70.w,
                                 width: 70.w,
                               ),
@@ -175,10 +182,12 @@ class _FeedpageState extends State<Feedpage> {
                                     builder: (context) => B2d2Introduce()));
                               });
                             },
-                            icon: ClipRRect(
-                              borderRadius: BorderRadius.circular(45.w),
+                            icon: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(45.w),
+                              ),
                               child: Image.asset(
-                                'assets/instagram.png',
+                                'assets/B2D2.png',
                                 height: 70.w,
                                 width: 70.w,
                               ),
