@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
+import 'package:frontend_project/src/screen/introduce/environmentalMonitoringIntroduce.dart';
+import 'package:frontend_project/src/screen/introduce/siheungIntroduce.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:frontend_project/src/widget/feed_box.dart';
 import 'package:frontend_project/src/widget/feed_write_floating_action_button.dart';
@@ -114,7 +116,9 @@ class _FeedpageState extends State<Feedpage> {
                         children: [
                           SizedBox(height: 5.h),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => Siheungintroduce())),
                             icon: ClipRRect(
                               borderRadius: BorderRadius.circular(45.w),
                               child: Image.asset(
@@ -137,7 +141,10 @@ class _FeedpageState extends State<Feedpage> {
                         children: [
                           SizedBox(height: 5.h),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Environmentalmonitoringintroduce())),
                             icon: ClipRRect(
                               borderRadius: BorderRadius.circular(45.w),
                               child: Image.asset(

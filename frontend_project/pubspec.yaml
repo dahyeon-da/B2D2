@@ -75,6 +75,8 @@ flutter:
     - assets/github.jpg
     - assets/no_photo.png
     - assets/modify.png
+    - assets/B2D2_logo.png
+    - assets/mypage.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
