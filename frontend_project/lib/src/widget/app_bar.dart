@@ -38,7 +38,7 @@ class _App_barState extends State<App_bar> {
         height: 40.h,
       ),
       iconTheme: IconThemeData(
-        color: Color.fromRGBO(0, 0, 0, 1),
+        color: Color.fromRGBO(255, 255, 255, 1),
       ),
       centerTitle: true,
       backgroundColor: const Color.fromRGBO(245, 208, 67, 1),

@@ -46,7 +46,7 @@ class _FeedpageState extends State<Feedpage> {
 
   Future<void> fetchData() async {
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
     List<dynamic> results = await feedConnect.FeedList();
     isLogin = await userController.isLogin();

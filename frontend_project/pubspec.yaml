@@ -77,6 +77,16 @@ flutter:
     - assets/modify.png
     - assets/B2D2_logo.png
     - assets/mypage.png
+    - assets/youth.png
+    - assets/siheung.png
+    - assets/sihwaho.png
+    - assets/sihwaho_children.jpg
+    - assets/phrase.png
+    - assets/B2D2.png
+    - assets/BSAS.jpg
+    - assets/darly.jpg
+    - assets/greenwhale.jpg
+    - assets/guard.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
