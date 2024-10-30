@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
-import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
+import 'package:frontend_project/src/screen/feed/personalInformation.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
 import 'package:intl/intl.dart';
 
@@ -26,6 +26,7 @@ class _RegisterState extends State<Register> {
 
   List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
   var _selectedValue = 'B2D2';
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +152,7 @@ class _RegisterState extends State<Register> {
                     child: Text(
                       '생년월일',
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 9.w, color: Colors.grey),
+                      style: TextStyle(fontSize: 13.sp, color: Colors.grey),
                     ),
                   ),
                   Container(
@@ -172,9 +173,19 @@ class _RegisterState extends State<Register> {
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 0),
+              child: Text(
+                '동아리',
+                style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey),
+              ),
+            ),
             // 동아리 선택
             Container(
-              margin: EdgeInsets.only(left: 20.w, right: 20.w),
+              margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.h),
               child: DropdownButton(
                   itemHeight: 48.0,
                   underline: SizedBox.shrink(),
@@ -200,6 +211,32 @@ class _RegisterState extends State<Register> {
                     });
                   }),
             ),
+            Row(
+              children: [
+                SizedBox(width: 20.w),
+                Checkbox(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    splashRadius: 0.h,
+                    value: isChecked,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    side: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                    activeColor: Colors.grey,
+                    onChanged: (bool? value) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Personalinformation()));
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    }),
+                Text('이용 약관 및 개인정보 처리 방침에 동의합니다.')
+              ],
+            ),
+            // 다음으로 가는 버튼
             Container(
               padding: EdgeInsets.only(left: 280.w),
               margin: EdgeInsets.fromLTRB(0, 10.w, 20.w, 0),
@@ -208,10 +245,9 @@ class _RegisterState extends State<Register> {
                 onPressed: () {
                   // 다음을 클릭하면 메인화면으로 이동
                   Future.delayed(Duration.zero, () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Feedwritepage(
-                              userInformation: Feedmodel('이다현', 'B2D2'),
+                              userInformation: Feedmodel('이다현', _selectedValue),
                             )));
                   });
                 },
@@ -232,7 +268,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(height: 100.h),
+            SizedBox(height: 30.h),
             Image.asset(
               'assets/logo.png',
               height: 33.h,
