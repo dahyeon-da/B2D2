@@ -33,11 +33,13 @@ class _FeedWriteFloatingActionButtonState
           // 버튼을 클릭하면 피드 작성 페이지로 이동하기
           // 로그인이 되어있는지 확인하고 로그인이 안되어있으면 로그인 창으로 이동.
           Future.delayed(Duration.zero, () {
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(
+            //     builder: (context) => widget.isLogin
+            //         ? Feedwritepage(userInformation: Feedmodel('', ''))
+            //         : Login()));
             Navigator.of(context)
-                .push(MaterialPageRoute(
-                builder: (context) => widget.isLogin
-                    ? Feedwritepage(userInformation: Feedmodel('', ''))
-                    : Login()));
+                .push(MaterialPageRoute(builder: (context) => Login()));
           });
         },
         color: Color.fromRGBO(97, 136, 84, 1),

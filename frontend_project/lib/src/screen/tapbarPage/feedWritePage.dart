@@ -5,6 +5,7 @@ import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class Feedwritepage extends StatefulWidget {
   final Feedmodel userInformation;
@@ -22,38 +23,25 @@ class _FeedwritepageState extends State<Feedwritepage> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _groupController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
 
   late String memberName;
   late String memberGroup;
   late Map<String, dynamic> result;
-
-  @override
-  void initState() {
-    memberName = widget.userInformation.memberName;
-    memberGroup = widget.userInformation.memberGroup;
-
-    setState(() {
-      _nameController =
-          TextEditingController(text: widget.userInformation.memberName);
-      _groupController =
-          TextEditingController(text: widget.userInformation.memberGroup);
-    });
-  }
+  String _selectedDate = '';
 
   // 일지 작성 버튼을 누를 때 동작할 함수
   _submitForm() async {
     final String nameText = _nameController.text;
     final String groupText = _groupController.text;
-    final String dateText = _dateController.text;
     final String contentText = _contentController.text;
 
-    print(nameText + groupText + dateText + contentText);
+    print(nameText + groupText + _selectedDate + contentText);
+    Get.to(Feedpage());
 
     result = await feedConnect.sendFeedWrite(
-        nameText, groupText, dateText, contentText);
+        nameText, groupText, _selectedDate, contentText);
 
     if (result != null && result.isNotEmpty) {
       Get.to(Feedpage());
@@ -89,6 +77,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: '글쓴이',
+                prefixText: widget.userInformation.memberName,
                 labelStyle: TextStyle(color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
@@ -108,6 +97,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
               controller: _groupController,
               decoration: InputDecoration(
                 labelText: '동아리명',
+                prefixText: widget.userInformation.memberGroup,
                 labelStyle: TextStyle(color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
@@ -122,23 +112,36 @@ class _FeedwritepageState extends State<Feedwritepage> {
           ),
           // 작성일 입력창
           Container(
-            margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 7.h),
-            child: TextFormField(
-              controller: _dateController,
-              decoration: InputDecoration(
-                labelText: '작성일',
-                hintText: 'ex) 2000-00-00',
-                hintStyle: TextStyle(color: Colors.grey),
-                labelStyle: TextStyle(color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.grey,
+            margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+            decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(width: 0.7, color: Colors.grey))),
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: Text(
+                    '작성일',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 13.sp, color: Colors.grey),
                   ),
                 ),
-              ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        _selectedDate,
+                        style: TextStyle(fontSize: 14.w),
+                      ),
+                      IconButton(
+                        onPressed: () => _selectDate(context),
+                        icon: Icon(Icons.date_range),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           // 일지 내용 입력창
@@ -211,5 +214,20 @@ class _FeedwritepageState extends State<Feedwritepage> {
         ],
       ),
     );
+  }
+
+  Future _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      initialDate: DateTime.now(),
+    );
+
+    if (selected != null) {
+      setState(() {
+        _selectedDate = (DateFormat('yyyy/MM/dd')).format(selected);
+      });
+    }
   }
 }

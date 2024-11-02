@@ -26,6 +26,7 @@ class _LoginState extends State<Login> {
   _submitForm() async {
     final String memberId = _idController.text;
     final String memberPassword = _passwordController.text;
+    Get.to(Feedwritepage(userInformation: Feedmodel('이다현', 'B2D2')));
 
     Map<String, dynamic> results =
         await userController.login(memberId, memberPassword);
