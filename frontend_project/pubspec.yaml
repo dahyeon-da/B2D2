@@ -87,6 +87,7 @@ flutter:
     - assets/darly.jpg
     - assets/greenwhale.jpg
     - assets/guard.jpg
+    - assets/youth_foundation.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
