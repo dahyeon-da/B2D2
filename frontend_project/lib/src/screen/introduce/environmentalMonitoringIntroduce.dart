@@ -90,7 +90,7 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
                   top: 0.h,
                   child: Column(
                     children: [
-                      CircleImage(imageName: 'B2D2.png'),
+                      CircleImage(imageName: 'B2D2.png', group: 0),
                       Text('B2D2',
                           style: TextStyle(
                               fontSize: 11, fontWeight: FontWeight.w600))
@@ -102,7 +102,7 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
                   top: 75.h,
                   child: Column(
                     children: [
-                      CircleImage(imageName: 'greenwhale.jpg'),
+                      CircleImage(imageName: 'greenwhale.jpg', group: 1),
                       const Text('그린웨일',
                           style: TextStyle(
                               fontSize: 11, fontWeight: FontWeight.w600))
@@ -114,7 +114,7 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
                   top: 75.h,
                   child: Column(
                     children: [
-                      CircleImage(imageName: 'darly.jpg'),
+                      CircleImage(imageName: 'darly.jpg', group: 2),
                       Text('달리',
                           style: TextStyle(
                               fontSize: 11, fontWeight: FontWeight.w600))
@@ -126,7 +126,7 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
                   bottom: 15.h,
                   child: Column(
                     children: [
-                      CircleImage(imageName: 'guard.jpg'),
+                      CircleImage(imageName: 'guard.jpg', group: 3),
                       Text('지킴이',
                           style: TextStyle(
                               fontSize: 11, fontWeight: FontWeight.w600))
@@ -138,7 +138,7 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
                   bottom: 15.h,
                   child: Column(
                     children: [
-                      CircleImage(imageName: 'BSAS.jpg'),
+                      CircleImage(imageName: 'BSAS.jpg', group: 4),
                       Text('B.S.A.S',
                           style: TextStyle(
                               fontSize: 11, fontWeight: FontWeight.w600))
@@ -146,6 +146,13 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 10.h),
+            child: Text(
+              '‘시화호청소년환경감시단’은 환경복원의 역사를 품고 있는 ‘시화호’를 기반한 환경교육을 통해 지역사회의 환경문제를 인식하고 지역 환경개선 활동을 진행하는 모니터링단입니다.',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             ),
           )
         ],

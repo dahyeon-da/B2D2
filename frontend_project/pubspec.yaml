@@ -88,6 +88,11 @@ flutter:
     - assets/greenwhale.jpg
     - assets/guard.jpg
     - assets/youth_foundation.png
+    - assets/baegot1.PNG
+    - assets/baegot2.PNG
+    - assets/jeongwang.PNG
+    - assets/Kkoomi.PNG
+    - assets/wolgot.PNG
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
