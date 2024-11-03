@@ -84,15 +84,27 @@ class _FeedBoxState extends State<FeedBox> {
                       SizedBox(height: 5.h),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Feedmodify())),
-                    icon: Image.asset(
-                      'assets/modify.png',
-                      width: 30.h,
-                    ),
-                    highlightColor: Colors.transparent,
-                  )
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => Feedmodify())),
+                        icon: Image.asset(
+                          'assets/modify.png',
+                          width: 20.h,
+                        ),
+                        highlightColor: Colors.transparent,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          // TODO: 피드 글이 삭제되는 행동
+                        },
+                        icon: Icon(Icons.delete),
+                        highlightColor: Colors.transparent,
+                      )
+                    ],
+                  ),
                 ],
               ),
               SizedBox(
