@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
+import 'package:frontend_project/src/screen/tapbarPage/myPage.dart';
 import 'package:get/get.dart';
 
 class App_bar extends StatefulWidget implements PreferredSizeWidget {
@@ -43,15 +44,25 @@ class _App_barState extends State<App_bar> {
       centerTitle: true,
       backgroundColor: const Color.fromRGBO(245, 208, 67, 1),
       actions: [
-        isLogin
-            ? IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  'assets/mypage.png',
-                  height: 40.h,
-                ),
-              )
-            : SizedBox()
+        // isLogin
+        //     ? IconButton(
+        //         onPressed: () {},
+        //         icon: Image.asset(
+        //           'assets/mypage.png',
+        //           height: 40.h,
+        //         ),
+        //       )
+        //     : SizedBox()
+        IconButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => Mypage()));
+          },
+          icon: Image.asset(
+            'assets/mypage.png',
+            height: 40.h,
+          ),
+        )
       ],
     );
   }

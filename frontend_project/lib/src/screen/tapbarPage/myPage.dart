@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
+import 'package:frontend_project/src/widget/app_bar.dart';
 
-class Mypage extends StatelessWidget {
+class Mypage extends StatefulWidget {
   const Mypage({super.key});
+
+  @override
+  State<Mypage> createState() => _MypageState();
+}
+
+class _MypageState extends State<Mypage> {
+  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: '이다현');
+  }
+
+  List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
+  var _selectedGroup = 'B2D2';
+
+  bool nameUpdate = true;
+  bool passwordUpdate = true;
+  bool groupUpdate = true;
 
   @override
   Widget build(BuildContext context) {
@@ -12,120 +33,217 @@ class Mypage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          Image.asset('assets/logo.png', height: 23.h),
-          SizedBox(width: 10.w),
-        ],
-        backgroundColor: Color.fromRGBO(245, 208, 67, 1),
-      ),
-      body: Column(
+      appBar: App_bar(),
+      body: ListView(
         children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 0.3))),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                '시흥시청소년재단 소개',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21.sp,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-              ),
-            ),
+          SizedBox(
+            width: 15.w,
           ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 0.3))),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                '시화호청소년환경감시단 소개',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21.sp,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w),
+                    child: Text(
+                      '이름',
+                      style: TextStyle(fontSize: 17.sp),
+                    ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      setState(() {
+                        nameUpdate = false;
+                        // TODO: update api에 변경할 이름을 넣어야 함.
+                      });
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      size: 20.h,
+                    ),
+                  ),
+                ],
+              ),
+              nameUpdate
+                  ? Container(
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        '이다현',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: '이름',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+              SizedBox(height: 10.h),
+              Container(
+                margin: EdgeInsets.only(left: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '동아리',
+                      style: TextStyle(fontSize: 17.sp),
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        setState(() {
+                          groupUpdate = false;
+                          // TODO: update api에 변경할 동아리를 넣어야 함.
+                        });
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        size: 20.h,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 0.3))),
-            child: TextButton(
-              onPressed: () {
-                // 다음을 클릭하면 동아리 선택창으로 이동
-                Future.delayed(Duration.zero, () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => B2d2Introduce()));
-                });
-              },
-              child: Text(
-                '디지털환경감시단(B2D2) 소개',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21.sp,
+              groupUpdate
+                  ? Container(
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        'B2D2',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.5),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButton(
+                          itemHeight: 48.0,
+                          underline: SizedBox.shrink(),
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          isExpanded: true,
+                          alignment: Alignment.centerLeft,
+                          focusColor: Colors.white,
+                          dropdownColor: Colors.white,
+                          value: _selectedGroup,
+                          items: _groupList.map(
+                            (value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(
+                                  value,
+                                ),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGroup = value!;
+                            });
+                          }),
+                    ),
+              SizedBox(height: 10.h),
+              Container(
+                margin: EdgeInsets.only(left: 10.w),
+                child: Text(
+                  '아이디',
+                  style: TextStyle(fontSize: 17.sp),
                 ),
               ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 0.3))),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                '내 정보 수정',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21.sp,
+              Container(
+                margin: EdgeInsets.only(left: 10.w),
+                child: Text(
+                  'lsjin8261',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w),
+                    child: Text(
+                      '비밀번호',
+                      style: TextStyle(fontSize: 17.sp),
+                    ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      setState(() {
+                        passwordUpdate = false;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      size: 20.h,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 0.3))),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                '로그아웃',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21.sp,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-              ),
-            ),
+              passwordUpdate
+                  ? Container()
+                  : Container(
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: '비밀번호',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+              nameUpdate && groupUpdate && passwordUpdate
+                  ? Container()
+                  : Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 5.h),
+                      child: TextButton(
+                        onPressed: () {
+                          // TODO: 정보수정 api와 연결하는 행동
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(255, 212, 58, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
+                        child: Text(
+                          '수정완료',
+                          style: TextStyle(
+                              color: Color.fromRGBO(97, 136, 84, 1),
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    )
+            ],
           ),
         ],
       ),
