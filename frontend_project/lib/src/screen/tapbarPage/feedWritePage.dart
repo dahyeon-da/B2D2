@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
@@ -5,6 +7,7 @@ import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class Feedwritepage extends StatefulWidget {
@@ -45,6 +48,19 @@ class _FeedwritepageState extends State<Feedwritepage> {
 
     if (result != null && result.isNotEmpty) {
       Get.to(Feedpage());
+    }
+  }
+
+  final List<File> _selectedImages = [];
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImages.add(File(pickedFile.path));
+      });
     }
   }
 
@@ -171,7 +187,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
             children: [
               SizedBox(width: 15.w),
               IconButton(
-                onPressed: () {},
+                onPressed: _pickImage,
                 highlightColor: Colors.transparent,
                 icon: Container(
                   height: 100.w,
@@ -186,7 +202,31 @@ class _FeedwritepageState extends State<Feedwritepage> {
                     size: 30,
                   ),
                 ),
-              )
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: _selectedImages.map((image) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 10.w),
+                        child: Container(
+                          height: 100.w,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromRGBO(189, 189, 189, 1),
+                            image: DecorationImage(
+                              image: FileImage(image),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
             ],
           ),
           SizedBox(height: 5.h),
