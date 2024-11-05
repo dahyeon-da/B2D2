@@ -29,22 +29,22 @@ class _FeedwritepageState extends State<Feedwritepage> {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
 
-  late String memberName;
-  late String memberGroup;
   late Map<String, dynamic> result;
   String _selectedDate = '';
 
   // 일지 작성 버튼을 누를 때 동작할 함수
   _submitForm() async {
-    final String nameText = _nameController.text;
-    final String groupText = _groupController.text;
     final String contentText = _contentController.text;
 
-    print(nameText + groupText + _selectedDate + contentText);
+    print(widget.userInformation.memberName +
+        widget.userInformation.memberGroup +
+        _selectedDate +
+        contentText);
     Get.to(Feedpage());
 
     result = await feedConnect.sendFeedWrite(
-        nameText, groupText, _selectedDate, contentText);
+        widget.userInformation.memberName,
+        widget.userInformation.memberGroup, _selectedDate, contentText);
 
     if (result != null && result.isNotEmpty) {
       Get.to(Feedpage());
@@ -61,6 +61,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
       setState(() {
         _selectedImages.add(File(pickedFile.path));
       });
+      print(_selectedImages[0]);
     }
   }
 

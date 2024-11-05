@@ -45,7 +45,7 @@ dependencies:
   get: ^4.6.6
   http: ^1.2.2
   image_picker: ^1.1.2
-
+  flutter_secure_storage: ^6.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -17,8 +17,8 @@ class UserController extends GetxController {
     try {
       Map<String, dynamic> result =
           await userConnection.sendLogin(memberId, memberPassword);
+
       await GetStorage.init();
-      await _storage.write('access_token', result['access_token']);
       return result;
     } catch (e) {
       print('Error: $e');

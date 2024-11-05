@@ -39,7 +39,8 @@ class FeedConnect extends GetConnect {
   // 피드 등록하기
   Future sendFeedWrite(String memberName, String memberGroup, String boardDate,
       String boardContent) async {
-    Response response = await post('/api/feed/write', {
+    print(await getToken);
+    Response response = await post('/api/v2/feeds', {
       'memberName': memberName,
       'memberGroup': memberGroup,
       'boardDate': boardDate,
@@ -47,6 +48,7 @@ class FeedConnect extends GetConnect {
     }, headers: {
       'authorization': await getToken
     });
+    
     Map<String, dynamic> body = response.body;
     print(body);
 
