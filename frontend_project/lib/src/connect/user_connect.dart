@@ -26,10 +26,37 @@ class UserConnect extends GetConnect {
     if (body['code'] != 200) {
       throw Exception(body['code']);
     }
-    String? accessToken = response.headers?['refreshtoken'];
-    print(accessToken);
+    String? accessToken = response.headers?['accesstoken'];
     await _storage.write('access_token', accessToken);
-    print(_storage.read('access_token'));
     return body['data'];
   }
+
+  Future sendRegister(String memberId, String memberPassword, String memberName,
+      String memberPhoneNumber, String memberGroup) async {
+    try {
+      Response response = await post('api/v2/auth/signup', {
+        'memberId': memberId,
+        'memberPassword': memberPassword,
+        'memberName': memberName,
+        'memberPhoneNumber': memberPhoneNumber,
+        'memberGroup': memberGroup
+      });
+      Map<String, dynamic> body = response.body;
+      print(body);
+
+      if (body['code'] != 201) {
+        throw Exception(body['code']);
+      }
+    } catch (e) {
+      print('Error : $e');
+    }
+  }
+
+  // Future renewalToken(String oldToken) async {
+  //   try {
+  //     Response response = await post('api/v2/auth/token', headers: )
+  //   } catch(e) {
+
+  //   }
+  // }
 }

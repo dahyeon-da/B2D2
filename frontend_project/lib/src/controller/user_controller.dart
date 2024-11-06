@@ -25,4 +25,18 @@ class UserController extends GetxController {
       return null;
     }
   }
+
+  // 회원가입을 시도하는 함수
+  Future register(String memberId, String memberPassword, String memberName,
+      String memberPhoneNumber, String memberGroup) async {
+    try {
+      Map<String, dynamic> result = await userConnection.sendRegister(
+          memberId, memberPassword, memberName, memberPhoneNumber, memberGroup);
+
+      return result;
+    } catch (e) {
+      print('Error: $e');
+      return null;
+    }
+  }
 }

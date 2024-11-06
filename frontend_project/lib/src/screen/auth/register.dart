@@ -18,15 +18,15 @@ class _RegisterState extends State<Register> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordCheckController =
       TextEditingController();
-  String _selectedDate = '';
 
   List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
   var _selectedValue = 'B2D2';
   bool isChecked = false;
+
+  _submitForm() {}
 
   @override
   Widget build(BuildContext context) {
@@ -145,34 +145,8 @@ class _RegisterState extends State<Register> {
               decoration: BoxDecoration(
                   border: Border(
                       bottom: BorderSide(width: 0.7, color: Colors.grey))),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    child: Text(
-                      '생년월일',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 13.sp, color: Colors.grey),
-                    ),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          _selectedDate,
-                          style: TextStyle(fontSize: 14.w),
-                        ),
-                        IconButton(
-                          onPressed: () => _selectDate(context),
-                          icon: Icon(Icons.date_range),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ),
+            
             Container(
               margin: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 0),
               child: Text(
@@ -233,7 +207,10 @@ class _RegisterState extends State<Register> {
                         isChecked = value!;
                       });
                     }),
-                Text('이용 약관 및 개인정보 처리 방침에 동의합니다.')
+                Text(
+                  '이용 약관 및 개인정보 처리 방침에 동의합니다.',
+                  style: TextStyle(fontSize: 14.sp),
+                )
               ],
             ),
             // 다음으로 가는 버튼
@@ -244,17 +221,12 @@ class _RegisterState extends State<Register> {
               child: OutlinedButton(
                 onPressed: () {
                   // 다음을 클릭하면 메인화면으로 이동
-                  Future.delayed(Duration.zero, () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Feedwritepage(
-                              userInformation: Feedmodel('이다현', _selectedValue),
-                            )));
-                  });
+                  // _submitForm
                 },
                 child: Text(
                   '다음',
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.bold,
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
@@ -286,11 +258,5 @@ class _RegisterState extends State<Register> {
       lastDate: DateTime.now(),
       initialDate: DateTime.now(),
     );
-
-    if (selected != null) {
-      setState(() {
-        _selectedDate = (DateFormat('yyyy/MM/dd')).format(selected);
-      });
-    }
   }
 }
