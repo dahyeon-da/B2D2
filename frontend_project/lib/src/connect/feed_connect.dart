@@ -25,10 +25,10 @@ class FeedConnect extends GetConnect {
   // 피드 전체 리스트 불러오기
   Future FeedList() async {
     try {
-      Response response = await get('/api/feed/list');
+      Response response = await get('/api/v2/feeds');
       Map<String, dynamic> body = response.body;
 
-      if (body['code'] != 201) {
+      if (body['code'] != 200) {
         throw Exception(body['message']);
       }
       return body['data'];

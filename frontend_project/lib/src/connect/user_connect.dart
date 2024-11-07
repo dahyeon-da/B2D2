@@ -18,23 +18,29 @@ class UserConnect extends GetConnect {
   }
 
   Future sendLogin(String memberId, String memberPassword) async {
-    Response response = await post('/api/v2/auth/signin',
-        {'memberId': memberId, 'memberPassword': memberPassword});
-    Map<String, dynamic> body = response.body;
-    print(body);
+    try {
+      Response response = await post('/api/v2/auth/signin',
+          {'memberId': memberId, 'memberPassword': memberPassword});
+      Map<String, dynamic> body = response.body;
+      print(body);
 
-    if (body['code'] != 200) {
-      throw Exception(body['code']);
+      if (body['code'] != 200) {
+        return null;
+      }
+
+      String? accessToken = response.headers?['accesstoken'];
+      await _storage.write('access_token', accessToken);
+      return body['data'];
+    } catch (e) {
+      print('Error: $e');
+      return null;
     }
-    String? accessToken = response.headers?['accesstoken'];
-    await _storage.write('access_token', accessToken);
-    return body['data'];
   }
 
   Future sendRegister(String memberId, String memberPassword, String memberName,
       String memberPhoneNumber, String memberGroup) async {
     try {
-      Response response = await post('api/v2/auth/signup', {
+      Response response = await post('/api/v2/auth/signup', {
         'memberId': memberId,
         'memberPassword': memberPassword,
         'memberName': memberName,
@@ -42,11 +48,13 @@ class UserConnect extends GetConnect {
         'memberGroup': memberGroup
       });
       Map<String, dynamic> body = response.body;
-      print(body);
 
       if (body['code'] != 201) {
         throw Exception(body['code']);
       }
+      String? accessToken = response.headers?['accesstoken'];
+      await _storage.write('access_token', accessToken);
+      return body;
     } catch (e) {
       print('Error : $e');
     }

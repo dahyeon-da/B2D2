@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/feed/personalInformation.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class Register extends StatefulWidget {
@@ -13,6 +15,8 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final userController = Get.put(UserController());
+
   // 로그인 시 필요한 formkey, 텍스트 입력시 입력한 아이디, 비밀번호 파악을 위한 controller 변수 생성
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
@@ -22,11 +26,33 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordCheckController =
       TextEditingController();
 
+  String registerFail = '';
+
   List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
-  var _selectedValue = 'B2D2';
+  var _selectedGroup = 'B2D2';
   bool isChecked = false;
 
-  _submitForm() {}
+  _submitForm() async {
+    final String memberId = _idController.text;
+    final String memberPassword = _passwordController.text;
+    final String memberName = _nameController.text;
+    final String memberPhoneNumber = _phoneNumberController.text;
+
+    print(memberId +
+        memberPassword +
+        memberName +
+        memberPhoneNumber +
+        _selectedGroup);
+
+    Map<String, dynamic> results = await userController.register(memberId,
+        memberPassword, memberName, memberPhoneNumber, _selectedGroup);
+    Feedmodel userInformation = Feedmodel(memberName, _selectedGroup);
+
+    if (results != null && results.isNotEmpty && isChecked) {
+      // 회원가입 성공 시 피드 작성 페이지로 이동
+      Get.to(Feedwritepage(userInformation: userInformation));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +172,7 @@ class _RegisterState extends State<Register> {
                   border: Border(
                       bottom: BorderSide(width: 0.7, color: Colors.grey))),
             ),
-            
+
             Container(
               margin: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 0),
               child: Text(
@@ -168,7 +194,7 @@ class _RegisterState extends State<Register> {
                   alignment: Alignment.centerLeft,
                   focusColor: Colors.white,
                   dropdownColor: Colors.white,
-                  value: _selectedValue,
+                  value: _selectedGroup,
                   items: _groupList.map(
                     (value) {
                       return DropdownMenuItem(
@@ -181,7 +207,7 @@ class _RegisterState extends State<Register> {
                   ).toList(),
                   onChanged: (value) {
                     setState(() {
-                      _selectedValue = value!;
+                      _selectedGroup = value!;
                     });
                   }),
             ),
@@ -219,10 +245,7 @@ class _RegisterState extends State<Register> {
               margin: EdgeInsets.fromLTRB(0, 10.w, 20.w, 0),
               height: 40.h,
               child: OutlinedButton(
-                onPressed: () {
-                  // 다음을 클릭하면 메인화면으로 이동
-                  // _submitForm
-                },
+                onPressed: _submitForm,
                 child: Text(
                   '다음',
                   style: TextStyle(

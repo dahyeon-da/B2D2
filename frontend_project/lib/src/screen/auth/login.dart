@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
-import 'package:frontend_project/src/model/userModel.dart';
 import 'package:frontend_project/src/screen/auth/register.dart';
-import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
 import 'package:get/get.dart';
 
@@ -22,19 +20,30 @@ class _LoginState extends State<Login> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // 로그인 실패 시 띄워질 오류 텍스트 생성
+  String errorText = '';
+
   // 로그인 버튼을 누를 때 동작할 함수
   _submitForm() async {
-    final String memberId = _idController.text;
-    final String memberPassword = _passwordController.text;
+    try {
+      final String memberId = _idController.text;
+      final String memberPassword = _passwordController.text;
 
-    Map<String, dynamic> results =
-        await userController.login(memberId, memberPassword);
-    Feedmodel userInformation =
-        Feedmodel(results['memberName'], results['memberGroup']);
+      Map<String, dynamic>? results =
+          await userController.login(memberId, memberPassword);
 
-    if (results != null && results.isNotEmpty) {
-      // 로그인 성공 시 피드 작성 페이지로 이동
-      Get.to(Feedwritepage(userInformation: userInformation));
+      if (results == null || results.isEmpty) {
+        setState(() {
+          errorText = '아이디나 비밀번호가 틀립니다.';
+        });
+      } else {
+        Feedmodel userInformation =
+            Feedmodel(results['memberName'], results['memberGroup']);
+        // 로그인 성공 시 피드 작성 페이지로 이동
+        Get.to(Feedwritepage(userInformation: userInformation));
+      }
+    } catch (e) {
+      print("Error: $e");
     }
   }
 
@@ -94,6 +103,15 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
+            errorText.isEmpty
+                ? SizedBox.shrink()
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Text(
+                      errorText,
+                      style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                    ),
+                  ),
             // 아이디찾기 버튼
             // TODO: 보류로 하는게 나을것 같음. 일단 주요 기능만 만들어보기
             // Container(
