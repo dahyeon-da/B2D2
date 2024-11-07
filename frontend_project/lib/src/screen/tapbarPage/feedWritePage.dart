@@ -23,11 +23,9 @@ class _FeedwritepageState extends State<Feedwritepage> {
   final feedConnect = Get.put(FeedConnect());
 
   // 피드작성 시 필요한 formkey, 텍스트 입력시 입력한 글쓴이, 동아리명, 작성날짜, 작성내용, 이미지 파악을 위한 controller 변수 생성
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _groupController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _imageController = TextEditingController();
 
   late Map<String, dynamic> result;
   String _selectedDate = '';

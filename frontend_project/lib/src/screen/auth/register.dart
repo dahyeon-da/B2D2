@@ -26,6 +26,13 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordCheckController =
       TextEditingController();
 
+  // 비밀번호가 형식에 맞는지 파악하기 위한 변수
+  final RegExp passwordRegex = RegExp(
+      r'^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{}|:;,.<>?/`~]).{8,}$');
+
+  // 회원가입 시 에러처리 텍스트 생성
+  String errorText = '';
+
   String registerFail = '';
 
   List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
@@ -33,26 +40,51 @@ class _RegisterState extends State<Register> {
   bool isChecked = false;
 
   _submitForm() async {
-    final String memberId = _idController.text;
-    final String memberPassword = _passwordController.text;
-    final String memberName = _nameController.text;
-    final String memberPhoneNumber = _phoneNumberController.text;
+    try {
+      final memberId = _idController.text;
+      final memberPassword = _passwordController.text;
+      final memberName = _nameController.text;
+      final memberPhoneNumber = _phoneNumberController.text;
+      final memberPasswordCheck = _passwordCheckController.text;
 
-    print(memberId +
-        memberPassword +
-        memberName +
-        memberPhoneNumber +
-        _selectedGroup);
+      print(
+          '$memberId $memberPassword $memberName $memberPhoneNumber $_selectedGroup');
 
-    Map<String, dynamic> results = await userController.register(memberId,
-        memberPassword, memberName, memberPhoneNumber, _selectedGroup);
-    Feedmodel userInformation = Feedmodel(memberName, _selectedGroup);
+      String? error;
+      if (memberPassword != memberPasswordCheck) {
+        error = '비밀번호가 같지 않습니다.';
+      } else if (!isChecked) {
+        error = '이용 약관을 확인해주세요.';
+      } else if (!passwordRegex.hasMatch(memberPassword)) {
+        error =
+            '비밀번호는 영문, 숫자, 특수문자(!, @, #, \$, %, ^, &, *, (, ), _, +, -, =, {, }, \[, \], |, :, ;, \", \', <, >, ,, ., ?, /, ~, \`)를 포함한 8자 이상의 문자여야 합니다.';
+      }
 
-    if (results != null && results.isNotEmpty && isChecked) {
-      // 회원가입 성공 시 피드 작성 페이지로 이동
-      Get.to(Feedwritepage(userInformation: userInformation));
+      if (error != null) {
+        setState(() => errorText = error!);
+        return;
+      }
+
+      final results = await userController.register(
+        memberId,
+        memberPassword,
+        memberName,
+        memberPhoneNumber,
+        _selectedGroup,
+      );
+
+      if (results == null || results.isEmpty) {
+        setState(() => errorText = '회원가입에 실패했습니다.');
+        return;
+      }
+
+      final userInformation = Feedmodel(memberName, _selectedGroup);
+      Get.to(() => Feedwritepage(userInformation: userInformation));
+    } catch (e) {
+      print('Error: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +98,7 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.white,
       ),
       body: Form(
+        key: _formkey,
         child: ListView(
           children: [
             SizedBox(height: 80.h),
@@ -86,6 +119,12 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
+                // 입력 필수 에러
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '아이디를 입력해주세요.';
+                  }
+                },
               ),
             ),
             // 비밀번호 입력창
@@ -185,7 +224,7 @@ class _RegisterState extends State<Register> {
             ),
             // 동아리 선택
             Container(
-              margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.h),
+              margin: EdgeInsets.only(left: 20.w, right: 20.w),
               child: DropdownButton(
                   itemHeight: 48.0,
                   underline: SizedBox.shrink(),
@@ -211,6 +250,16 @@ class _RegisterState extends State<Register> {
                     });
                   }),
             ),
+            errorText.isEmpty
+                ? SizedBox.shrink()
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Text(
+                      errorText,
+                      style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                    ),
+                  ),
+            SizedBox(height: 10.h),
             Row(
               children: [
                 SizedBox(width: 20.w),
@@ -227,8 +276,14 @@ class _RegisterState extends State<Register> {
                     ),
                     activeColor: Colors.grey,
                     onChanged: (bool? value) {
+                      isChecked
+                          ? null
+                          : 
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => Personalinformation()));
+                      isChecked
+                          ? null
+                          :
                       setState(() {
                         isChecked = value!;
                       });

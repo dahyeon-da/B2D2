@@ -32,8 +32,6 @@ class UserController extends GetxController {
     try {
       Map<String, dynamic> result = await userConnection.sendRegister(
           memberId, memberPassword, memberName, memberPhoneNumber, memberGroup);
-      print('heyhey');
-      print(result);
       return result;
     } catch (e) {
       print('Error: $e');

@@ -50,13 +50,14 @@ class UserConnect extends GetConnect {
       Map<String, dynamic> body = response.body;
 
       if (body['code'] != 201) {
-        throw Exception(body['code']);
+        return null;
       }
       String? accessToken = response.headers?['accesstoken'];
       await _storage.write('access_token', accessToken);
       return body;
     } catch (e) {
       print('Error : $e');
+      return null;
     }
   }
 
