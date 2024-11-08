@@ -21,13 +21,25 @@ class Feedwritepage extends StatefulWidget {
 }
 
 class _FeedwritepageState extends State<Feedwritepage> {
+  late String _selectedGroup;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.userInformation.memberGroup == '') {
+      _selectedGroup = 'B2D2';
+    } else {
+      _selectedGroup = widget.userInformation.memberGroup;
+    }
+  }
+
   final feedConnect = Get.put(FeedConnect());
   final imageConnect = Get.put(ImageConnect());
 
   // 피드작성 시 필요한 formkey, 텍스트 입력시 입력한 글쓴이, 동아리명, 작성날짜, 작성내용, 이미지 파악을 위한 controller 변수 생성
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _groupController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+  List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
 
   late Map<String, dynamic> feedResult;
   late Map<String, dynamic> imageResult;
@@ -53,18 +65,11 @@ class _FeedwritepageState extends State<Feedwritepage> {
   // 일지 작성 버튼을 누를 때 동작할 함수
   _submitForm() async {
     final String contentText = _contentController.text;
-
-    print(widget.userInformation.memberName +
-        widget.userInformation.memberGroup +
-        _selectedDate +
-        contentText);
+    final String nameText = _nameController.text;
     String boardDate = DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc());
 
     feedResult = await feedConnect.sendFeedWrite(
-        widget.userInformation.memberName,
-        widget.userInformation.memberGroup,
-        boardDate,
-        contentText);
+        nameText, _selectedGroup, boardDate, contentText);
 
     imageResult =
         await imageConnect.uploadImage(feedResult['boardNum'], _selectedImages);
@@ -119,25 +124,32 @@ class _FeedwritepageState extends State<Feedwritepage> {
               ),
             ),
           ),
-          // 동아리명 입력창
           Container(
-            margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 7.h),
-            child: TextFormField(
-              controller: _groupController,
-              decoration: InputDecoration(
-                labelText: '동아리명',
-                prefixText: widget.userInformation.memberGroup,
-                labelStyle: TextStyle(color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
+            margin: EdgeInsets.only(left: 20.w, right: 20.w),
+            child: DropdownButton(
+                itemHeight: 48.0,
+                underline: SizedBox.shrink(),
+                icon: Icon(Icons.keyboard_arrow_down),
+                isExpanded: true,
+                alignment: Alignment.centerLeft,
+                focusColor: Colors.white,
+                dropdownColor: Colors.white,
+                value: _selectedGroup,
+                items: _groupList.map(
+                  (value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(
+                        value,
+                      ),
+                    );
+                  },
+                ).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedGroup = value!;
+                  });
+                }),
           ),
           // 작성일 입력창
           Container(
