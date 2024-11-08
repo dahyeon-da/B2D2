@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
+import 'package:frontend_project/src/connect/image_connect.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
@@ -21,14 +22,33 @@ class Feedwritepage extends StatefulWidget {
 
 class _FeedwritepageState extends State<Feedwritepage> {
   final feedConnect = Get.put(FeedConnect());
+  final imageConnect = Get.put(ImageConnect());
 
   // 피드작성 시 필요한 formkey, 텍스트 입력시 입력한 글쓴이, 동아리명, 작성날짜, 작성내용, 이미지 파악을 위한 controller 변수 생성
   TextEditingController _nameController = TextEditingController();
   TextEditingController _groupController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
-  late Map<String, dynamic> result;
+  late Map<String, dynamic> feedResult;
+  late Map<String, dynamic> imageResult;
   String _selectedDate = '';
+
+  final _picker = ImagePicker();
+  final List<File> _selectedImages = [];
+
+  Future<void> _pickImage() async {
+    // 여러 이미지 선택 가능
+    final pickedFiles = await _picker.pickMultiImage();
+
+    if (pickedFiles != null) {
+      setState(() {
+        // 선택된 이미지를 리스트에 추가
+        _selectedImages
+            .addAll(pickedFiles.map((pickedFile) => File(pickedFile.path)));
+      });
+      print('Selected images: ${_selectedImages.length}');
+    }
+  }
 
   // 일지 작성 버튼을 누를 때 동작할 함수
   _submitForm() async {
@@ -38,28 +58,22 @@ class _FeedwritepageState extends State<Feedwritepage> {
         widget.userInformation.memberGroup +
         _selectedDate +
         contentText);
-    Get.to(Feedpage());
+    String boardDate = DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc());
 
-    result = await feedConnect.sendFeedWrite(
+    feedResult = await feedConnect.sendFeedWrite(
         widget.userInformation.memberName,
-        widget.userInformation.memberGroup, _selectedDate, contentText);
+        widget.userInformation.memberGroup,
+        boardDate,
+        contentText);
 
-    if (result != null && result.isNotEmpty) {
+    imageResult =
+        await imageConnect.uploadImage(feedResult['boardNum'], _selectedImages);
+
+    if (feedResult != null &&
+        feedResult.isNotEmpty &&
+        imageResult != null &&
+        imageResult.isNotEmpty) {
       Get.to(Feedpage());
-    }
-  }
-
-  final List<File> _selectedImages = [];
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImages.add(File(pickedFile.path));
-      });
-      print(_selectedImages[0]);
     }
   }
 
