@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
-import 'package:frontend_project/src/screen/feed/feedModify.dart';
+import 'package:frontend_project/src/widget/imageView.dart';
 
 class FeedBox extends StatefulWidget {
   final List<Map<String, dynamic>> feedData;
@@ -15,6 +15,7 @@ class FeedBox extends StatefulWidget {
 }
 
 class _FeedBoxState extends State<FeedBox> {
+  @override
   void initState() {
     super.initState();
   }
@@ -86,24 +87,46 @@ class _FeedBoxState extends State<FeedBox> {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => Feedmodify())),
-                        icon: Image.asset(
-                          'assets/modify.png',
-                          width: 20.h,
-                        ),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return FractionallySizedBox(
+                                heightFactor: 0.8,
+                                child: Imageview(imageAssets: item['images']),
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.image_outlined),
+                        hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
-                      IconButton(
-                        onPressed: () {
-                          // TODO: 피드 글이 삭제되는 행동
-                        },
-                        icon: Icon(Icons.delete),
-                        highlightColor: Colors.transparent,
-                      )
+                      SizedBox(width: 10.w)
                     ],
-                  ),
+                  )
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //       onPressed: () => Navigator.of(context).push(
+                  //           MaterialPageRoute(
+                  //               builder: (context) => Feedmodify())),
+                  //       icon: Image.asset(
+                  //         'assets/modify.png',
+                  //         width: 20.h,
+                  //       ),
+                  //       highlightColor: Colors.transparent,
+                  //     ),
+                  //     IconButton(
+                  //       onPressed: () {
+                  //         // TODO: 피드 글이 삭제되는 행동
+                  //       },
+                  //       icon: Icon(Icons.delete),
+                  //       highlightColor: Colors.transparent,
+                  //     )
+                  //   ],
+                  // ),
                 ],
               ),
               SizedBox(

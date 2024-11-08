@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/shared/global.dart';
 
 class Imageview extends StatefulWidget {
   final List imageAssets;
@@ -37,15 +38,55 @@ class _ImageviewState extends State<Imageview> {
             controller: _pageController,
             itemCount: widget.imageAssets.length,
             itemBuilder: (context, index) {
-              return Container(
-                color: Colors.black, // 기본 배경을 검정색으로 설정
-                child: Center(
-                  child: Image.asset(
-                    widget.imageAssets[index],
-                    fit: BoxFit.contain, // 원본 비율을 유지하며 맞춤
-                    width: double.infinity,
-                  ),
-                ),
+              return SizedBox(
+                height: 350.h,
+                width: 350.h,
+                child: (widget.imageAssets == null ||
+                        widget.imageAssets.isEmpty) // 배열이 비어 있는지 체크
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/no_photo.png',
+                                  height: 100.h, width: 100.h),
+                              Text(
+                                'No image',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(175, 175, 175, 1)),
+                              )
+                            ]),
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.imageAssets[index].length,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            '${Global.apiRoot}/api/v2/images/${widget.imageAssets[index]}',
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          (loadingProgress.expectedTotalBytes ??
+                                              1)
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (BuildContext context, Object error,
+                                StackTrace? stackTrace) {
+                              return const Text('이미지를 불러오는 중 오류가 발생했습니다.');
+                            },
+                          );
+                        },
+                      ),
               );
             },
           ),
