@@ -18,6 +18,7 @@ class ImageConnect {
     baseUrl: Global.apiRoot,
   ));
 
+  // 이미지 업로드
   Future uploadImage(int feedNum, List<File> imageFiles) async {
     try {
       List<MultipartFile> images = [];
@@ -52,22 +53,4 @@ class ImageConnect {
       throw Exception('서버 통신오류: $e');
     }
   }
-
-  // 이미지 업로드
-  // Future ImageUpload(int feedNum, List<File> images) async {
-  //   try {
-  //     Response response = await post('/api/v2/feeds/${feedNum}/images', {
-  //       'files': images,
-  //     });
-  //     Map<String, dynamic> body = response.body;
-  //     print(body);
-
-  //     if (body['code'] != 201) {
-  //       throw Exception(body['message']);
-  //     }
-  //     return body['data'];
-  //   } catch (e) {
-  //     print('Error : $e');
-  //   }
-  // }
 }

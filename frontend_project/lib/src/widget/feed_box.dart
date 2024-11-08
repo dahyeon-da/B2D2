@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
 import 'package:frontend_project/src/screen/feed/feedModify.dart';
-import 'package:get/get.dart';
 
 class FeedBox extends StatefulWidget {
   final List<Map<String, dynamic>> feedData;
@@ -134,7 +133,7 @@ class _FeedBoxState extends State<FeedBox> {
                         itemCount: item['images'].length,
                         itemBuilder: (context, index) {
                           return Image.network(
-                            '${Global.apiRoot}/api/image/download/${item['images'][index]}',
+                            '${Global.apiRoot}/api/v2/images/${item['images'][index]}',
                             loadingBuilder: (BuildContext context, Widget child,
                                 ImageChunkEvent? loadingProgress) {
                               if (loadingProgress == null) return child;
