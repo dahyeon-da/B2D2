@@ -57,4 +57,41 @@ class FeedConnect extends GetConnect {
     } else if (body['code'] == 401) {}
     return body['data'];
   }
+
+  // 자신이 작성한 피드 불러오기
+  Future sendFeedsMine() async {
+    try {
+      Response response = await get('/api/v2/users/mine/feeds',
+          headers: {'authorization': await getToken});
+
+      Map<String, dynamic> body = response.body;
+      print(body);
+
+      if (body['code'] != 200) {
+        return null;
+      }
+      return body['data'];
+    } catch (e) {
+      print('Error $e');
+      return null;
+    }
+  }
+
+  // 피드 삭제하기
+  sendFeedDelete(int feedNum) async {
+    try {
+      Response response = await delete('/api/v2/feeds/${feedNum}',
+          headers: {'authorization': await getToken});
+
+      Map<String, dynamic> body = response.body;
+      print(body);
+
+      if (body['code'] != 200) {
+        return null;
+      }
+      return body;
+    } catch (e) {
+      return null;
+    }
+  }
 }

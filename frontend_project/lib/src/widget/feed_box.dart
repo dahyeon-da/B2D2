@@ -3,21 +3,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
+import 'package:frontend_project/src/connect/feed_connect.dart';
+import 'package:frontend_project/src/screen/feed/feedModify.dart';
 import 'package:frontend_project/src/widget/imageView.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class FeedBox extends StatefulWidget {
   final List<Map<String, dynamic>> feedData;
+  final bool myFeed;
 
-  const FeedBox({super.key, required this.feedData});
+  const FeedBox({super.key, required this.feedData, required this.myFeed});
 
   @override
   State<FeedBox> createState() => _FeedBoxState();
 }
 
 class _FeedBoxState extends State<FeedBox> {
+  final feedConnect = Get.put(FeedConnect());
+  late List<Map<String, dynamic>> feedData;
+
   @override
   void initState() {
     super.initState();
+    feedData = widget.feedData;
+  }
+
+  // 피드 데이터를 다시 로드하는 함수
+  fetchData() async {
+    final results = await feedConnect.FeedList(); // 새로 피드 리스트를 불러옴
+    setState(() {
+      feedData = results.map((result) {
+        return {
+          'boardNum': result['boardNum'],
+          'boardWriter': result['boardWriter'],
+          'boardWriterGroup': result['boardWriterGroup'],
+          'boardDate': formDate(result['boardDate']),
+          'boardContent': result['boardContent'],
+          'images': result['images']?.split(',') ?? [],
+        };
+      }).toList();
+    });
+  }
+
+  // 날짜 데이터를 포맷화하는 함수
+  String formDate(String date) {
+    final DateTime parsedDate = DateTime.parse(date);
+    return DateFormat('yyyy-MM-dd').format(parsedDate);
   }
 
   @override
@@ -99,34 +131,53 @@ class _FeedBoxState extends State<FeedBox> {
                             },
                           );
                         },
-                        icon: const Icon(Icons.image_outlined),
+                        icon: const Icon(
+                          Icons.image_outlined,
+                          size: 23,
+                        ),
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
+                        padding: EdgeInsets.all(5.w),
+                        constraints: BoxConstraints(),
                       ),
+                      widget.myFeed
+                          ? Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) => Feedmodify())),
+                                  icon: Image.asset(
+                                    'assets/modify.png',
+                                    width: 20.h,
+                                  ),
+                                  highlightColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  padding: EdgeInsets.all(5.w),
+                                  constraints: BoxConstraints(),
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    List<Map<String, dynamic>> result =
+                                        await feedConnect
+                                            .sendFeedDelete(item['boardNum']);
+
+                                    if (result.isNotEmpty) {
+                                      fetchData();
+                                    }
+                                  },
+                                  icon: Icon(Icons.delete),
+                                  highlightColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  padding: EdgeInsets.all(5.w),
+                                  constraints: BoxConstraints(),
+                                )
+                              ],
+                            )
+                          : Container(),
                       SizedBox(width: 10.w)
                     ],
-                  )
-                  // Row(
-                  //   children: [
-                  //     IconButton(
-                  //       onPressed: () => Navigator.of(context).push(
-                  //           MaterialPageRoute(
-                  //               builder: (context) => Feedmodify())),
-                  //       icon: Image.asset(
-                  //         'assets/modify.png',
-                  //         width: 20.h,
-                  //       ),
-                  //       highlightColor: Colors.transparent,
-                  //     ),
-                  //     IconButton(
-                  //       onPressed: () {
-                  //         // TODO: 피드 글이 삭제되는 행동
-                  //       },
-                  //       icon: Icon(Icons.delete),
-                  //       highlightColor: Colors.transparent,
-                  //     )
-                  //   ],
-                  // ),
+                  ),
                 ],
               ),
               SizedBox(

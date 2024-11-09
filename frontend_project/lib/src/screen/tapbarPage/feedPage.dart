@@ -241,7 +241,10 @@ class _FeedpageState extends State<Feedpage> {
                           }),
                     ),
                   ),
-                  FeedBox(feedData: feedData)
+                  FeedBox(
+                    feedData: feedData,
+                    myFeed: false,
+                  )
                 ],
               )));
   }
