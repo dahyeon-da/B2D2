@@ -17,6 +17,12 @@ class UserConnect extends GetConnect {
     super.onInit();
   }
 
+  // 토큰 받아오기
+  get getToken async {
+    String token = _storage.read("access_token");
+    return ('Baearer $token');
+  }
+
   Future sendLogin(String memberId, String memberPassword) async {
     try {
       Response response = await post('/api/v2/auth/signin',
@@ -57,6 +63,31 @@ class UserConnect extends GetConnect {
       return body;
     } catch (e) {
       print('Error : $e');
+      return null;
+    }
+  }
+
+  Future sendUpdateUser(
+      String memberName, String memberPassword, String memberGroup) async {
+    try {
+      Response response = await patch('/api/v2/users/mine', {
+        'memberName': memberName,
+        'memberPassword': memberPassword,
+        'memberGroup': memberGroup
+      }, headers: {
+        'authorization': await getToken
+      });
+
+      Map<String, dynamic> body = response.body;
+
+      print(body);
+
+      if (body['code'] != 200) {
+        print('Connect Error');
+        return null;
+      }
+      return body;
+    } catch (e) {
       return null;
     }
   }

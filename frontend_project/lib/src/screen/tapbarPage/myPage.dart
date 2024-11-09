@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend_project/src/connect/user_connect.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
+import 'package:get/get.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -10,17 +13,62 @@ class Mypage extends StatefulWidget {
 }
 
 class _MypageState extends State<Mypage> {
+  final userConnect = Get.put(UserConnect());
+
   TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final storage = new FlutterSecureStorage();
+  String? memberId;
+  String? memberName;
+  String? memberGroup;
+
+  late Map<String, dynamic> results;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: '이다현');
+    getInformation();
+    patchData();
+  }
+
+  Future patchData() async {
+    
+  }
+
+  Future getInformation() async {
+    memberName = await storage.read(key: 'memberName');
+    memberGroup = await storage.read(key: 'memberGroup');
+    memberId = await storage.read(key: 'memberId');
+
+    setState(() {
+      _nameController.text = memberName == '' ? '오류' : memberName!;
+      _selectedGroup = memberGroup == '' ? 'B2D2' : memberGroup!;
+    });
+  }
+
+  // 수정완료 버튼을 누를 때 동작할 함수
+  _submitForm() async {
+    late String name;
+    try {
+      if (_nameController.text == null || _nameController.text.isEmpty) {
+        name = memberName!;
+      } else {
+        name = _nameController.text;
+      }
+      final String group = _selectedGroup;
+      final String password = _passwordController.text;
+
+      results = await userConnect.sendUpdateUser(name, password, group);
+      nameUpdate = true;
+      passwordUpdate = true;
+      groupUpdate = true;
+    } catch (e) {
+      print('Error $e');
+    }
   }
 
   List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
-  var _selectedGroup = 'B2D2';
+  var _selectedGroup;
 
   bool nameUpdate = true;
   bool passwordUpdate = true;
@@ -72,7 +120,7 @@ class _MypageState extends State<Mypage> {
                   ? Container(
                       margin: EdgeInsets.only(left: 10.w),
                       child: Text(
-                        '이다현',
+                        memberName == '' ? '오류' : memberName!,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     )
@@ -124,7 +172,7 @@ class _MypageState extends State<Mypage> {
                   ? Container(
                       margin: EdgeInsets.only(left: 10.w),
                       child: Text(
-                        'B2D2',
+                        memberGroup == '' ? '오류' : memberGroup!,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     )
@@ -170,7 +218,7 @@ class _MypageState extends State<Mypage> {
               Container(
                 margin: EdgeInsets.only(left: 10.w),
                 child: Text(
-                  'lsjin8261',
+                  memberId == '' ? '오류' : memberId!,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -180,9 +228,17 @@ class _MypageState extends State<Mypage> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 10.w),
-                    child: Text(
-                      '비밀번호',
-                      style: TextStyle(fontSize: 17.sp),
+                    child: Row(
+                      children: [
+                        Text(
+                          '비밀번호',
+                          style: TextStyle(fontSize: 17.sp),
+                        ),
+                        Text(
+                          '  ※필수로 작성※',
+                          style: TextStyle(fontSize: 12.sp),
+                        )
+                      ],
                     ),
                   ),
                   IconButton(
@@ -205,6 +261,7 @@ class _MypageState extends State<Mypage> {
                       margin: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: TextFormField(
                         controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           labelText: '비밀번호',
                           labelStyle: TextStyle(color: Colors.grey),
@@ -225,9 +282,7 @@ class _MypageState extends State<Mypage> {
                       width: double.infinity,
                       margin: EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 5.h),
                       child: TextButton(
-                        onPressed: () {
-                          // TODO: 정보수정 api와 연결하는 행동
-                        },
+                        onPressed: _submitForm,
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Color.fromRGBO(255, 212, 58, 1),
                           shape: RoundedRectangleBorder(

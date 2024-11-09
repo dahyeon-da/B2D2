@@ -44,25 +44,28 @@ class _App_barState extends State<App_bar> {
       centerTitle: true,
       backgroundColor: const Color.fromRGBO(245, 208, 67, 1),
       actions: [
-        // isLogin
-        //     ? IconButton(
-        //         onPressed: () {},
-        //         icon: Image.asset(
-        //           'assets/mypage.png',
-        //           height: 40.h,
-        //         ),
-        //       )
-        //     : SizedBox()
-        IconButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Mypage()));
-          },
-          icon: Image.asset(
-            'assets/mypage.png',
-            height: 40.h,
-          ),
-        )
+        isLogin
+            ? IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Mypage()));
+                },
+                icon: Image.asset(
+                  'assets/mypage.png',
+                  height: 40.h,
+                ),
+              )
+            : SizedBox()
+        // IconButton(
+        //   onPressed: () {
+        //     Navigator.of(context)
+        //         .push(MaterialPageRoute(builder: (context) => Mypage()));
+        //   },
+        //   icon: Image.asset(
+        //     'assets/mypage.png',
+        //     height: 40.h,
+        //   ),
+        // )
       ],
     );
   }

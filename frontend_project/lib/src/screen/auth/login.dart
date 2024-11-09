@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/auth/register.dart';
@@ -15,6 +16,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final userController = Get.put(UserController());
+  final storage = new FlutterSecureStorage();
   // 로그인 시 필요한 formkey, 텍스트 입력시 입력한 아이디, 비밀번호 파악을 위한 controller 변수 생성
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
@@ -31,6 +33,9 @@ class _LoginState extends State<Login> {
 
       Map<String, dynamic>? results =
           await userController.login(memberId, memberPassword);
+      await storage.write(key: 'memberName', value: results?['memberName']);
+      await storage.write(key: 'memberId', value: results?['memberId']);
+      await storage.write(key: 'memberGroup', value: results?['memberGroup']);
 
       if (results == null || results.isEmpty) {
         setState(() {
