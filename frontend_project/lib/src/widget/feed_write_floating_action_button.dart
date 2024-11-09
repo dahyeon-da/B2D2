@@ -37,7 +37,7 @@ class _FeedWriteFloatingActionButtonState
                 .push(MaterialPageRoute(
                 builder: (context) => widget.isLogin
                     ? Feedwritepage(userInformation: Feedmodel('', ''))
-                    : Login()));
+                    : Login(isWrite: true)));
           });
         },
         color: Color.fromRGBO(97, 136, 84, 1),

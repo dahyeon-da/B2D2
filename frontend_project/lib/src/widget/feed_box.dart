@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/screen/feed/feedModify.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
+import 'package:frontend_project/src/screen/tapbarPage/myPage.dart';
 import 'package:frontend_project/src/widget/imageView.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -21,29 +23,32 @@ class FeedBox extends StatefulWidget {
 
 class _FeedBoxState extends State<FeedBox> {
   final feedConnect = Get.put(FeedConnect());
-  late List<Map<String, dynamic>> feedData;
+  List<Map<String, dynamic>> feedData = [];
 
   @override
   void initState() {
     super.initState();
-    feedData = widget.feedData;
+    fetchData;
   }
 
-  // 피드 데이터를 다시 로드하는 함수
   fetchData() async {
-    final results = await feedConnect.FeedList(); // 새로 피드 리스트를 불러옴
-    setState(() {
-      feedData = results.map((result) {
-        return {
-          'boardNum': result['boardNum'],
-          'boardWriter': result['boardWriter'],
-          'boardWriterGroup': result['boardWriterGroup'],
-          'boardDate': formDate(result['boardDate']),
-          'boardContent': result['boardContent'],
-          'images': result['images']?.split(',') ?? [],
-        };
-      }).toList();
-    });
+    try {
+      final results = await feedConnect.FeedList();
+      setState(() {
+        feedData = List<Map<String, dynamic>>.from(results.map((result) {
+          return {
+            'boardNum': result['boardNum'],
+            'boardWriter': result['boardWriter'],
+            'boardWriterGroup': result['boardWriterGroup'],
+            'boardDate': formDate(result['boardDate']),
+            'boardContent': result['boardContent'],
+            'images': result['images']?.split(',') ?? [],
+          };
+        }));
+      });
+    } catch (e) {
+      print("데이터 로드 중 오류 발생: $e");
+    }
   }
 
   // 날짜 데이터를 포맷화하는 함수
@@ -158,12 +163,18 @@ class _FeedBoxState extends State<FeedBox> {
                                 ),
                                 IconButton(
                                   onPressed: () async {
-                                    List<Map<String, dynamic>> result =
+                                    Map<String, dynamic> result =
                                         await feedConnect
                                             .sendFeedDelete(item['boardNum']);
 
                                     if (result.isNotEmpty) {
                                       fetchData();
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Mypage()),
+                                      );
                                     }
                                   },
                                   icon: Icon(Icons.delete),

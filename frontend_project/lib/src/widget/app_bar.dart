@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
+import 'package:frontend_project/src/screen/auth/login.dart';
 import 'package:frontend_project/src/screen/tapbarPage/myPage.dart';
 import 'package:get/get.dart';
 
@@ -55,7 +56,16 @@ class _App_barState extends State<App_bar> {
                   height: 40.h,
                 ),
               )
-            : SizedBox()
+            : TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Login(isWrite: false)));
+                },
+                child: Text(
+                  'Login',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ))
         // IconButton(
         //   onPressed: () {
         //     Navigator.of(context)

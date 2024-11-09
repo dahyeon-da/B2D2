@@ -4,11 +4,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
 import 'package:frontend_project/src/screen/auth/register.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/screen/tapbarPage/feedWritePage.dart';
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  final bool isWrite;
+
+  const Login({super.key, required this.isWrite});
 
   @override
   State<Login> createState() => _LoginState();
@@ -45,7 +48,9 @@ class _LoginState extends State<Login> {
         Feedmodel userInformation =
             Feedmodel(results['memberName'], results['memberGroup']);
         // 로그인 성공 시 피드 작성 페이지로 이동
-        Get.to(Feedwritepage(userInformation: userInformation));
+        widget.isWrite
+            ? Get.to(Feedwritepage(userInformation: userInformation))
+            : Get.to(Feedpage());
       }
     } catch (e) {
       print("Error: $e");
