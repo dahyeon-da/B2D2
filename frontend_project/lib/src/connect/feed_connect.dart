@@ -23,9 +23,13 @@ class FeedConnect extends GetConnect {
   }
 
   // 피드 전체 리스트 불러오기
-  Future FeedList() async {
+  Future FeedList([group_num = 0]) async {
     try {
-      Response response = await get('/api/v2/feeds');
+      String url = '/api/v2/feeds';
+      if (0 < group_num) {
+        url += '?group_num=$group_num';
+      }
+      Response response = await get(url);
       Map<String, dynamic> body = response.body;
 
       if (body['code'] != 200) {
@@ -36,6 +40,7 @@ class FeedConnect extends GetConnect {
       print('Error : $e');
     }
   }
+
 
   // 피드 등록하기
   Future sendFeedWrite(String memberName, String memberGroup, String boardDate,

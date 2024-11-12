@@ -44,11 +44,11 @@ class _FeedpageState extends State<Feedpage> {
     return DateFormat('yyyy-MM-dd').format(parsedDate);
   }
 
-  Future<void> fetchData() async {
+  Future<void> fetchData([group_num = 0]) async {
     setState(() {
       isLoading = false;
     });
-    List<dynamic> results = await feedConnect.FeedList();
+    List<dynamic> results = await feedConnect.FeedList(group_num);
     isLogin = await userController.isLogin();
 
     feedData = results.map((result) {
@@ -64,14 +64,13 @@ class _FeedpageState extends State<Feedpage> {
 
     setState(() {
       isLoading = false;
-      print(feedData);
     });
   }
 
   late final PageController _imageController;
 
-  List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
-  var _selectedValue = 'B2D2';
+  List<String> _groupList = ['전체', 'B2D2', '그린웨일', '지킴이', 'B.S.A.S', '달리'];
+  var _selectedValue = '전체';
 
   @override
   void dispose() {
@@ -236,6 +235,10 @@ class _FeedpageState extends State<Feedpage> {
                           ).toList(),
                           onChanged: (value) {
                             setState(() {
+                              if (_selectedValue != value && value != null) {
+                                int i = _groupList.indexOf(value);
+                                fetchData(i);
+                              }
                               _selectedValue = value!;
                             });
                           }),
