@@ -145,13 +145,16 @@ class B2d2Introduce extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    child: Text(
-                      'Min_seung',
-                      style: GoogleFonts.dosis(
-                        textStyle: TextStyle(
-                          fontSize: 35.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        'Min_seung',
+                        style: GoogleFonts.dosis(
+                          textStyle: TextStyle(
+                            fontSize: 35.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

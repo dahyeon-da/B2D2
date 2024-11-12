@@ -107,101 +107,105 @@ class _FeedpageState extends State<Feedpage> {
             : SingleChildScrollView(
                 child: Column(
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          SizedBox(height: 5.h),
-                          IconButton(
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => Siheungintroduce())),
-                            icon: Container(
-                              height: 70.w,
-                              width: 70.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(35.w),
-                              ),
-                              child: Image.asset(
-                                'assets/siheung_logo.png',
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(height: 5.h),
+                            IconButton(
+                              onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Siheungintroduce())),
+                              icon: Container(
                                 height: 70.w,
                                 width: 70.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(35.w),
+                                ),
+                                child: Image.asset(
+                                  'assets/siheung_logo.png',
+                                  height: 70.w,
+                                  width: 70.w,
+                                ),
                               ),
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                             ),
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                          ),
-                          Text(
-                            '시흥청소년 재단 소개',
-                            style: TextStyle(fontSize: 11.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 20.w),
-                      Column(
-                        children: [
-                          SizedBox(height: 5.h),
-                          IconButton(
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Environmentalmonitoringintroduce())),
-                            icon: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(45.w),
+                            Text(
+                              '시흥청소년재단 소개',
+                              style: TextStyle(fontSize: 11.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(width: 20.w),
+                        Column(
+                          children: [
+                            SizedBox(height: 5.h),
+                            IconButton(
+                              onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Environmentalmonitoringintroduce())),
+                              icon: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45.w),
+                                ),
+                                child: Image.asset(
+                                  'assets/sihwaho.png',
+                                  height: 70.w,
+                                  width: 70.w,
+                                ),
                               ),
-                              child: Image.asset(
-                                'assets/sihwaho.png',
-                                height: 70.w,
-                                width: 70.w,
-                              ),
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                             ),
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                          ),
-                          Text(
-                            '시화호 청소년 환경\n감시단 소개',
-                            style: TextStyle(fontSize: 11.sp),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 20.w),
-                      Column(
-                        children: [
-                          SizedBox(height: 5.h),
-                          IconButton(
-                            onPressed: () {
-                              // 버튼을 클릭하면 B2D2 소개글 창으로 이동
-                              Future.delayed(Duration.zero, () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => B2d2Introduce()));
-                              });
-                            },
-                            icon: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(45.w),
+                            Text(
+                              '시화호청소년환경감시단 소개',
+                              style: TextStyle(fontSize: 11.sp),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                        SizedBox(width: 20.w),
+                        Column(
+                          children: [
+                            SizedBox(height: 5.h),
+                            IconButton(
+                              onPressed: () {
+                                // 버튼을 클릭하면 B2D2 소개글 창으로 이동
+                                Future.delayed(Duration.zero, () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => B2d2Introduce()));
+                                });
+                              },
+                              icon: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45.w),
+                                ),
+                                child: Image.asset(
+                                  'assets/B2D2.png',
+                                  height: 70.w,
+                                  width: 70.w,
+                                ),
                               ),
-                              child: Image.asset(
-                                'assets/B2D2.png',
-                                height: 70.w,
-                                width: 70.w,
-                              ),
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                             ),
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                          ),
-                          Text(
-                            '디지털환경감시단\nB2D2 소개',
-                            style: TextStyle(fontSize: 11.sp),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ],
+                            Text(
+                              '디지털환경감시단\nB2D2 소개',
+                              style: TextStyle(fontSize: 11.sp),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   Container(
