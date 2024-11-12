@@ -213,33 +213,42 @@ class _FeedBoxState extends State<FeedBox> {
                               )
                             ]),
                       )
-                    : ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: item['images'].length,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            '${Global.apiRoot}/api/v2/images/${item['images'][index]}',
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          (loadingProgress.expectedTotalBytes ??
-                                              1)
-                                      : null,
-                                ),
-                              );
-                            },
-                            errorBuilder: (BuildContext context, Object error,
-                                StackTrace? stackTrace) {
-                              return const Text('이미지를 불러오는 중 오류가 발생했습니다.');
-                            },
-                          );
-                        },
-                      ),
+                      : PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: item['images'].length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: 350.h,
+                              child: Image.network(
+                                '${Global.apiRoot}/api/v2/images/${item['images'][index]}',
+                                fit: BoxFit.contain,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object error, StackTrace? stackTrace) {
+                                  return const Text('이미지를 불러오는 중 오류가 발생했습니다.');
+                                },
+                              ),
+                            );
+                          },
+)
+
               ),
               SizedBox(width: 8.w),
               Container(

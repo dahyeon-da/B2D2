@@ -60,9 +60,9 @@ class _ImageviewState extends State<Imageview> {
                               )
                             ]),
                       )
-                    : ListView.builder(
+                    : PageView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: widget.imageAssets[index].length,
+                        itemCount: widget.imageAssets.length,
                         itemBuilder: (context, index) {
                           return Image.network(
                             '${Global.apiRoot}/api/v2/images/${widget.imageAssets[index]}',
