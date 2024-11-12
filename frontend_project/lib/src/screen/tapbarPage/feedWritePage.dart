@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/connect/image_connect.dart';
 import 'package:frontend_project/src/model/feedModel.dart';
@@ -21,15 +22,30 @@ class Feedwritepage extends StatefulWidget {
 }
 
 class _FeedwritepageState extends State<Feedwritepage> {
+  final storage = new FlutterSecureStorage();
   late String _selectedGroup;
+  late String _memberName;
 
   @override
   void initState() {
     super.initState();
+    _getData();
+  }
+
+  Future<void> _getData() async {
     if (widget.userInformation.memberGroup == '') {
-      _selectedGroup = 'B2D2';
+      String? memberGroup = await storage.read(key: 'memberGroup');
+      String? memberName = await storage.read(key: 'memberName');
+
+      setState(() {
+        _selectedGroup = memberGroup ?? 'B2D2';
+        _memberName = memberName ?? '';
+      });
     } else {
-      _selectedGroup = widget.userInformation.memberGroup;
+      setState(() {
+        _selectedGroup = widget.userInformation.memberGroup;
+        _memberName = widget.userInformation.memberName;
+      });
     }
   }
 
@@ -37,9 +53,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
   final imageConnect = Get.put(ImageConnect());
 
   // 피드작성 시 필요한 formkey, 텍스트 입력시 입력한 글쓴이, 동아리명, 작성날짜, 작성내용, 이미지 파악을 위한 controller 변수 생성
-  TextEditingController _nameController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  List<String> _groupList = ['B2D2', '지킴이', '달리', 'B.S.A.S', '그린웨일'];
 
   late Map<String, dynamic> feedResult;
   late Map<String, dynamic> imageResult;
@@ -65,11 +79,10 @@ class _FeedwritepageState extends State<Feedwritepage> {
   // 일지 작성 버튼을 누를 때 동작할 함수
   _submitForm() async {
     final String contentText = _contentController.text;
-    final String nameText = _nameController.text;
     String boardDate = DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc());
 
     feedResult = await feedConnect.sendFeedWrite(
-        nameText, _selectedGroup, boardDate, contentText);
+        _memberName, _selectedGroup, boardDate, contentText);
 
     imageResult =
         await imageConnect.uploadImage(feedResult['boardNum'], _selectedImages);
@@ -78,7 +91,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
         feedResult.isNotEmpty &&
         imageResult != null &&
         imageResult.isNotEmpty) {
-      Get.to(Feedpage());
+      Get.offAll(Feedpage());
     }
   }
 
@@ -104,56 +117,37 @@ class _FeedwritepageState extends State<Feedwritepage> {
             ),
           ),
           SizedBox(height: 5.h),
-          // 글쓴이 입력창
+          // 글쓴이 텍스트 => 수정 불가
           Container(
-            margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 7.h),
-            child: TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: '글쓴이',
-                prefixText: widget.userInformation.memberName,
-                labelStyle: TextStyle(color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.grey,
+              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 7.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('글쓴이',
+                      style: TextStyle(fontSize: 13.sp, color: Colors.grey)),
+                  Text(
+                    _memberName,
+                    style: TextStyle(fontSize: 15.sp),
                   ),
-                ),
-              ),
-            ),
-          ),
+                ],
+              )),
+          // 동아리 텍스트 => 선택 불가
           Container(
-            margin: EdgeInsets.only(left: 20.w, right: 20.w),
-            child: DropdownButton(
-                itemHeight: 48.0,
-                underline: SizedBox.shrink(),
-                icon: Icon(Icons.keyboard_arrow_down),
-                isExpanded: true,
-                alignment: Alignment.centerLeft,
-                focusColor: Colors.white,
-                dropdownColor: Colors.white,
-                value: _selectedGroup,
-                items: _groupList.map(
-                  (value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(
-                        value,
-                      ),
-                    );
-                  },
-                ).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedGroup = value!;
-                  });
-                }),
-          ),
+              margin: EdgeInsets.only(left: 20.w, right: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('동아리',
+                      style: TextStyle(fontSize: 13.sp, color: Colors.grey)),
+                  Text(
+                    _selectedGroup,
+                    style: TextStyle(fontSize: 15.sp),
+                  ),
+                ],
+              )),
           // 작성일 입력창
           Container(
-            margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+            margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
             decoration: BoxDecoration(
                 border:
                     Border(bottom: BorderSide(width: 0.7, color: Colors.grey))),

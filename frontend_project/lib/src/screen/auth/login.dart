@@ -49,8 +49,8 @@ class _LoginState extends State<Login> {
             Feedmodel(results['memberName'], results['memberGroup']);
         // 로그인 성공 시 피드 작성 페이지로 이동
         widget.isWrite
-            ? Get.to(Feedwritepage(userInformation: userInformation))
-            : Get.to(Feedpage());
+            ? Get.offAll(() => Feedwritepage(userInformation: userInformation))
+            : Get.offAll(() => Feedpage());
       }
     } catch (e) {
       print("Error: $e");
