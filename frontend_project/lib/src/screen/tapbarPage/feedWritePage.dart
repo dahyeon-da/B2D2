@@ -162,20 +162,20 @@ class _FeedwritepageState extends State<Feedwritepage> {
                   ),
                 ),
                 Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        _selectedDate,
-                        style: TextStyle(fontSize: 14.w),
-                      ),
-                      IconButton(
-                        onPressed: () => _selectDate(context),
-                        icon: Icon(Icons.date_range),
-                      ),
-                    ],
+                  child: InkWell(
+                    onTap: () => _selectDate(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          _selectedDate,
+                          style: TextStyle(fontSize: 14.w),
+                        ),
+                        Icon(Icons.date_range),
+                      ],
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),

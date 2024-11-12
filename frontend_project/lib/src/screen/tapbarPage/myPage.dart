@@ -21,12 +21,17 @@ class _MypageState extends State<Mypage> {
 
   TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordCheckController =
+      TextEditingController();
   final storage = new FlutterSecureStorage();
   String? memberId;
   String? memberName;
   String? memberGroup;
   bool isLoading = true;
   List<Map<String, dynamic>> feedData = [];
+  bool isUpdateSuccessful = false;
+  bool passwordCheck = false;
+  bool passwordError = false;
 
   late Map<String, dynamic> updateResults;
   late List<dynamic> feedsMineResults;
@@ -77,6 +82,11 @@ class _MypageState extends State<Mypage> {
   _submitForm() async {
     late String name;
     try {
+      if (_passwordCheckController.text == _passwordController.text) {
+        passwordCheck = true;
+      } else {
+        passwordCheck = false;
+      }
       if (_nameController.text == null || _nameController.text.isEmpty) {
         name = memberName!;
       } else {
@@ -85,7 +95,17 @@ class _MypageState extends State<Mypage> {
       final String group = _selectedGroup;
       final String password = _passwordController.text;
 
-      updateResults = await userConnect.sendUpdateUser(name, password, group);
+      if (passwordCheck) {
+        updateResults = await userConnect.sendUpdateUser(name, password, group);
+      }
+
+      if (updateResults == null || updateResults.isEmpty) {
+        passwordError = true;
+      }
+
+      setState(() {
+        isUpdateSuccessful = true;
+      });
     } catch (e) {
       print('Error $e');
     }
@@ -131,6 +151,21 @@ class _MypageState extends State<Mypage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 10.h),
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        '아이디',
+                        style: TextStyle(fontSize: 17.sp),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        memberId == '' ? '오류' : memberId!,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     SizedBox(height: 15.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,7 +182,6 @@ class _MypageState extends State<Mypage> {
                           onPressed: () {
                             setState(() {
                               nameUpdate = false;
-                              // TODO: update api에 변경할 이름을 넣어야 함.
                             });
                           },
                           icon: Icon(
@@ -249,21 +283,6 @@ class _MypageState extends State<Mypage> {
                                 }),
                           ),
                     SizedBox(height: 10.h),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w),
-                      child: Text(
-                        '아이디',
-                        style: TextStyle(fontSize: 17.sp),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w),
-                      child: Text(
-                        memberId == '' ? '오류' : memberId!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -317,6 +336,44 @@ class _MypageState extends State<Mypage> {
                               ),
                             ),
                           ),
+                    passwordUpdate
+                        ? Container()
+                        : Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                            child: TextFormField(
+                              controller: _passwordCheckController,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                labelText: '비밀번호확인',
+                                labelStyle: TextStyle(color: Colors.grey),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                    !passwordCheck && passwordUpdate
+                        ? Container()
+                        : Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              !passwordCheck
+                                  ? (passwordError
+                                      ? '비밀번호는 영문, 숫자, 특수문자(!, @, #, \$, %, ^, &, *, (, ), _, +, -, =, {, }, [, ], |, :, ;, \", \', <, >, ,, ., ?, /, ~, `)를 포함한 8자 이상의 문자로 이뤄져야 합니다.'
+                                      : '비밀번호가 일치하지 않습니다.')
+                                  : '', // 비밀번호가 일치하면 아무것도 표시하지 않음
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 10.sp),
+                            ),
+                          ),
+
                     nameUpdate && groupUpdate && passwordUpdate
                         ? Container()
                         : Container(
@@ -340,6 +397,15 @@ class _MypageState extends State<Mypage> {
                               ),
                             ),
                           ),
+                    if (isUpdateSuccessful)
+                      Center(
+                        child: Text(
+                          '수정이 완료되었습니다.',
+                          style:
+                              TextStyle(color: Colors.green, fontSize: 16.sp),
+                        ),
+                      ),
+                    SizedBox(height: 20.h),
                     FeedBox(
                       feedData: feedData,
                       myFeed: true,
