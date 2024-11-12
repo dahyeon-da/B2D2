@@ -3,7 +3,7 @@
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
-        android:label="frontend_project"
+        android:label="B2D2"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
