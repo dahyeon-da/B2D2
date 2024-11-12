@@ -39,6 +39,7 @@ class _LoginState extends State<Login> {
       await storage.write(key: 'memberName', value: results?['memberName']);
       await storage.write(key: 'memberId', value: results?['memberId']);
       await storage.write(key: 'memberGroup', value: results?['memberGroup']);
+      
 
       if (results == null || results.isEmpty) {
         setState(() {

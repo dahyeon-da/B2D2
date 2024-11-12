@@ -38,6 +38,20 @@ class _FeedmodifyState extends State<Feedmodify> {
   }
 
   Future<void> _pickImage() async {
+    // 현재 선택된 이미지 개수 확인
+    int totalImages = _uploadImages.length + _selectedImages.length;
+
+    if (totalImages >= 5) {
+      // 이미지 선택 개수가 5개 이상일 경우 경고 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('이미지를 더 이상 선택할 수 없습니다.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     // 여러 이미지 선택 가능
     final pickedFiles = await _picker.pickMultiImage();
 
@@ -57,14 +71,20 @@ class _FeedmodifyState extends State<Feedmodify> {
           widget.userInformation['boardNum'],
           _selectedDate,
           _contentController.text);
-      if (_uploadImages.isNotEmpty || _uploadImages == []) {
-        if (feedResult.isNotEmpty || feedResult == '') {
-          Get.back();
+      if (_uploadImages.isNotEmpty || _uploadImages != []) {
+        if (feedResult.isNotEmpty || feedResult != '') {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Mypage()),
+          );
         }
       }
       Map<String, dynamic> imageResult = await imageConnect.uploadImage(
           widget.userInformation['boardNum'], _uploadImages);
-      if (imageResult.isNotEmpty || imageResult == '') {
+      if (imageResult.isNotEmpty || imageResult != '') {
         Navigator.pop(context);
         Navigator.pop(context);
         Navigator.push(
@@ -74,6 +94,22 @@ class _FeedmodifyState extends State<Feedmodify> {
       }
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  removeImage(int fileNum) async {
+    try {
+      Map<String, dynamic> results = await imageConnect.deleteImage(fileNum);
+      if (results.isNotEmpty) {
+        setState(() {
+          _selectedImages.removeWhere((imageUrl) => imageUrl == fileNum);
+        });
+        print('이미지 삭제 성공: $fileNum');
+      } else {
+        print('이미지 삭제 실패');
+      }
+    } catch (e) {
+      print('이미지 삭제 중 오류 발생: $e');
     }
   }
 
@@ -190,86 +226,115 @@ class _FeedmodifyState extends State<Feedmodify> {
               ),
             ),
           ),
-          // 이미지 선택 부분
-          Row(
-            children: [
-              SizedBox(width: 15.w),
-              IconButton(
-                onPressed: _pickImage,
-                highlightColor: Colors.transparent,
-                icon: Container(
-                  height: 100.w,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color.fromRGBO(189, 189, 189, 1),
-                  ),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 30,
+          Container(
+              margin: EdgeInsets.only(left: 20.w),
+              child: Text(
+                '5개까지 입력 가능합니다.',
+                style: TextStyle(color: const Color.fromARGB(255, 255, 89, 0)),
+              )),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                // 이미지 선택 버튼
+                SizedBox(width: 15.w),
+                IconButton(
+                  onPressed: _pickImage,
+                  highlightColor: Colors.transparent,
+                  icon: Container(
+                    height: 100.w,
+                    width: 100.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color.fromRGBO(189, 189, 189, 1),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
                 ),
-              ),
-              // 원래 이미지 띄우기
-              (_selectedImages == null || _selectedImages.isEmpty)
-                  ? Container()
-                  : Container(
-                      height: 100.w,
-                      width: 100.w,
-                      child: ListView.builder(
-                        itemCount: _selectedImages.length,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            '${Global.apiRoot}/api/v2/images/${_selectedImages[index]}',
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          (loadingProgress.expectedTotalBytes ??
-                                              1)
-                                      : null,
-                                ),
-                              );
-                            },
-                            errorBuilder: (BuildContext context, Object error,
-                                StackTrace? stackTrace) {
-                              return const Text('이미지를 불러오는 중 오류가 발생했습니다.');
-                            },
-                          );
-                        },
-                      ),
-                    ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: _uploadImages.map((image) {
-                      return Padding(
-                        padding: EdgeInsets.only(right: 10.w),
-                        child: Container(
-                          height: 100.w,
-                          width: 100.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color.fromRGBO(189, 189, 189, 1),
-                            image: DecorationImage(
-                              image: FileImage(image),
-                              fit: BoxFit.cover,
+
+                // _selectedImages가 비어있지 않으면 서버에서 가져온 이미지들 표시
+                if (_selectedImages != null && _selectedImages.isNotEmpty)
+                  ..._selectedImages.map((imageUrl) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(7),
+                            child: Image.network(
+                              '${Global.apiRoot}/api/v2/images/$imageUrl',
+                              width: 100.w,
+                              height: 100.w,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            (loadingProgress
+                                                    .expectedTotalBytes ??
+                                                1)
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) {
+                                return const Text('이미지를 불러오는 중 오류가 발생했습니다.');
+                              },
                             ),
                           ),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: IconButton(
+                              icon: Icon(Icons.close,
+                                  color: Colors.white, size: 20),
+                              onPressed: () {
+                                setState(() {
+                                  removeImage(
+                                      int.parse(imageUrl)); // 파일 ID로 서버에 삭제 요청
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+
+                // _uploadImages가 비어있지 않으면 로컬에서 선택한 이미지들 표시
+                if (_uploadImages.isNotEmpty)
+                  ..._uploadImages.map((image) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: Container(
+                        height: 100.w,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color.fromRGBO(189, 189, 189, 1),
+                          image: DecorationImage(
+                            image: FileImage(image),
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                    );
+                  }).toList(),
+              ],
+            ),
           ),
+
           SizedBox(height: 5.h),
           Container(
             margin: EdgeInsets.only(left: 20.w, right: 20.w),

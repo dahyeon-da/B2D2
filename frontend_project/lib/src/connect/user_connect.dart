@@ -92,11 +92,12 @@ class UserConnect extends GetConnect {
     }
   }
 
-  // Future renewalToken(String oldToken) async {
-  //   try {
-  //     Response response = await post('api/v2/auth/token', headers: )
-  //   } catch(e) {
+  Future renewalToken(String oldToken) async {
+    try {
+      // Response response = await post('api/v2/auth/token',
+      //     headers: {'authorization': await getToken});
+    } catch (e) {
 
-  //   }
-  // }
+    }
+  }
 }

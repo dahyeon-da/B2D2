@@ -40,10 +40,10 @@ class _MypageState extends State<Mypage> {
   void initState() {
     super.initState();
     getInformation();
-    patchData();
+    fetchData();
   }
 
-  Future patchData() async {
+  Future fetchData() async {
     feedsMineResults = await feedConnect.sendFeedsMine();
 
     setState(() {
@@ -143,96 +143,50 @@ class _MypageState extends State<Mypage> {
         : Scaffold(
             backgroundColor: Colors.white,
             appBar: App_bar(),
-            body: ListView(
-              children: [
-                SizedBox(
-                  width: 15.w,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10.h),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w),
-                      child: Text(
-                        '아이디',
-                        style: TextStyle(fontSize: 17.sp),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w),
-                      child: Text(
-                        memberId == '' ? '오류' : memberId!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: 15.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w),
-                          child: Text(
-                            '이름',
-                            style: TextStyle(fontSize: 17.sp),
-                          ),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                await getInformation();
+                await fetchData();
+              },
+              child: ListView(
+                children: [
+                  SizedBox(
+                    width: 15.w,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10.h),
+                      Container(
+                        margin: EdgeInsets.only(left: 10.w),
+                        child: Text(
+                          '아이디',
+                          style: TextStyle(fontSize: 17.sp),
                         ),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            setState(() {
-                              nameUpdate = false;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            size: 20.h,
-                          ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 10.w),
+                        child: Text(
+                          memberId == '' ? '오류' : memberId!,
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      ],
-                    ),
-                    nameUpdate
-                        ? Container(
-                            margin: EdgeInsets.only(left: 10.w),
-                            child: Text(
-                              memberName == '' ? '오류' : memberName!,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        : Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                            child: TextFormField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                labelText: '이름',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w),
-                      child: Row(
+                      ),
+                      SizedBox(height: 15.h),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '동아리',
-                            style: TextStyle(fontSize: 17.sp),
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              '이름',
+                              style: TextStyle(fontSize: 17.sp),
+                            ),
                           ),
                           IconButton(
                             padding: EdgeInsets.zero,
                             onPressed: () {
                               setState(() {
-                                groupUpdate = false;
-                                // TODO: update api에 변경할 동아리를 넣어야 함.
+                                nameUpdate = false;
                               });
                             },
                             icon: Icon(
@@ -242,177 +196,228 @@ class _MypageState extends State<Mypage> {
                           ),
                         ],
                       ),
-                    ),
-                    groupUpdate
-                        ? Container(
-                            margin: EdgeInsets.only(left: 10.w),
-                            child: Text(
-                              memberGroup == '' ? '오류' : memberGroup!,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        : Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: DropdownButton(
-                                itemHeight: 48.0,
-                                underline: SizedBox.shrink(),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                isExpanded: true,
-                                alignment: Alignment.centerLeft,
-                                focusColor: Colors.white,
-                                dropdownColor: Colors.white,
-                                value: _selectedGroup,
-                                items: _groupList.map(
-                                  (value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedGroup = value!;
-                                  });
-                                }),
-                          ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w),
-                          child: Row(
-                            children: [
-                              Text(
-                                '비밀번호',
-                                style: TextStyle(fontSize: 17.sp),
-                              ),
-                              Text(
-                                '  ※필수로 작성※',
-                                style: TextStyle(fontSize: 12.sp),
-                              )
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            setState(() {
-                              passwordUpdate = false;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            size: 20.h,
-                          ),
-                        ),
-                      ],
-                    ),
-                    passwordUpdate
-                        ? Container()
-                        : Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                            child: TextFormField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: '비밀번호',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    passwordUpdate
-                        ? Container()
-                        : Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                            child: TextFormField(
-                              controller: _passwordCheckController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: '비밀번호확인',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    !passwordCheck && passwordUpdate
-                        ? Container()
-                        : Container(
-                            margin: EdgeInsets.only(left: 10.w),
-                            child: Text(
-                              !passwordCheck
-                                  ? (passwordError
-                                      ? '비밀번호는 영문, 숫자, 특수문자(!, @, #, \$, %, ^, &, *, (, ), _, +, -, =, {, }, [, ], |, :, ;, \", \', <, >, ,, ., ?, /, ~, `)를 포함한 8자 이상의 문자로 이뤄져야 합니다.'
-                                      : '비밀번호가 일치하지 않습니다.')
-                                  : '', // 비밀번호가 일치하면 아무것도 표시하지 않음
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                  fontSize: 10.sp),
-                            ),
-                          ),
-
-                    nameUpdate && groupUpdate && passwordUpdate
-                        ? Container()
-                        : Container(
-                            width: double.infinity,
-                            margin: EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 5.h),
-                            child: TextButton(
-                              onPressed: _submitForm,
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromRGBO(255, 212, 58, 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                              ),
+                      nameUpdate
+                          ? Container(
+                              margin: EdgeInsets.only(left: 10.w),
                               child: Text(
-                                '수정완료',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(97, 136, 84, 1),
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600),
+                                memberName == '' ? '오류' : memberName!,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                              child: TextFormField(
+                                controller: _nameController,
+                                decoration: InputDecoration(
+                                  labelText: '이름',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                    if (isUpdateSuccessful)
-                      Center(
-                        child: Text(
-                          '수정이 완료되었습니다.',
-                          style:
-                              TextStyle(color: Colors.green, fontSize: 16.sp),
+                      SizedBox(height: 10.h),
+                      Container(
+                        margin: EdgeInsets.only(left: 10.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '동아리',
+                              style: TextStyle(fontSize: 17.sp),
+                            ),
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                setState(() {
+                                  groupUpdate = false;
+                                  // TODO: update api에 변경할 동아리를 넣어야 함.
+                                });
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                size: 20.h,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    SizedBox(height: 20.h),
-                    FeedBox(
-                      feedData: feedData,
-                      myFeed: true,
-                    )
-                  ],
-                ),
-              ],
+                      groupUpdate
+                          ? Container(
+                              margin: EdgeInsets.only(left: 10.w),
+                              child: Text(
+                                memberGroup == '' ? '오류' : memberGroup!,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.5),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownButton(
+                                  itemHeight: 48.0,
+                                  underline: SizedBox.shrink(),
+                                  icon: Icon(Icons.keyboard_arrow_down),
+                                  isExpanded: true,
+                                  alignment: Alignment.centerLeft,
+                                  focusColor: Colors.white,
+                                  dropdownColor: Colors.white,
+                                  value: _selectedGroup,
+                                  items: _groupList.map(
+                                    (value) {
+                                      return DropdownMenuItem(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedGroup = value!;
+                                    });
+                                  }),
+                            ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '비밀번호',
+                                  style: TextStyle(fontSize: 17.sp),
+                                ),
+                                Text(
+                                  '  ※필수로 작성※',
+                                  style: TextStyle(fontSize: 12.sp),
+                                )
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              setState(() {
+                                passwordUpdate = false;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              size: 20.h,
+                            ),
+                          ),
+                        ],
+                      ),
+                      passwordUpdate
+                          ? Container()
+                          : Container(
+                              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                              child: TextFormField(
+                                controller: _passwordController,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: '비밀번호',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                      passwordUpdate
+                          ? Container()
+                          : Container(
+                              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                              child: TextFormField(
+                                controller: _passwordCheckController,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: '비밀번호확인',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                      !passwordCheck && passwordUpdate
+                          ? Container()
+                          : Container(
+                              margin: EdgeInsets.only(left: 10.w),
+                              child: Text(
+                                !passwordCheck
+                                    ? (passwordError
+                                        ? '비밀번호는 영문, 숫자, 특수문자(!, @, #, \$, %, ^, &, *, (, ), _, +, -, =, {, }, [, ], |, :, ;, \", \', <, >, ,, ., ?, /, ~, `)를 포함한 8자 이상의 문자로 이뤄져야 합니다.'
+                                        : '비밀번호가 일치하지 않습니다.')
+                                    : '', // 비밀번호가 일치하면 아무것도 표시하지 않음
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 10.sp),
+                              ),
+                            ),
+                      nameUpdate && groupUpdate && passwordUpdate
+                          ? Container()
+                          : Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 5.h),
+                              child: TextButton(
+                                onPressed: _submitForm,
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromRGBO(255, 212, 58, 1),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                ),
+                                child: Text(
+                                  '수정완료',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(97, 136, 84, 1),
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                      if (isUpdateSuccessful)
+                        Center(
+                          child: Text(
+                            '수정이 완료되었습니다.',
+                            style:
+                                TextStyle(color: Colors.green, fontSize: 16.sp),
+                          ),
+                        ),
+                      SizedBox(height: 20.h),
+                      FeedBox(
+                        feedData: feedData,
+                        myFeed: true,
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
   }

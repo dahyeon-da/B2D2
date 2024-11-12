@@ -1,10 +1,14 @@
 import 'package:frontend_project/shared/global.dart';
+import 'package:frontend_project/src/connect/user_connect.dart';
+import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:get_storage/get_storage.dart';
 
 final GetStorage _storage = GetStorage();
 
 class FeedConnect extends GetConnect {
+  final userConnect = Get.put(UserConnect());
+
   @override
   void onInit() {
     allowAutoSignedCert = true;
@@ -40,7 +44,6 @@ class FeedConnect extends GetConnect {
       print('Error : $e');
     }
   }
-
 
   // 피드 등록하기
   Future sendFeedWrite(String memberName, String memberGroup, String boardDate,
@@ -113,6 +116,8 @@ class FeedConnect extends GetConnect {
 
       if (body['code'] != 200) {
         return null;
+      } else if (body['code'] == 401) {
+        userConnect.renewalToken(await getToken);
       }
       return body;
     } catch (e) {

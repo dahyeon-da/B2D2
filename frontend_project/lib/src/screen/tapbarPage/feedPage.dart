@@ -104,155 +104,162 @@ class _FeedpageState extends State<Feedpage> {
                   ),
                 ),
               )
-            : SingleChildScrollView(
-                child: Column(
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            SizedBox(height: 5.h),
-                            IconButton(
-                              onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Siheungintroduce())),
-                              icon: Container(
-                                height: 70.w,
-                                width: 70.w,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(35.w),
-                                ),
-                                child: Image.asset(
-                                  'assets/siheung_logo.png',
+            : RefreshIndicator(
+                onRefresh: () async {
+                  await fetchData();
+                },
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              SizedBox(height: 5.h),
+                              IconButton(
+                                onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Siheungintroduce())),
+                                icon: Container(
                                   height: 70.w,
                                   width: 70.w,
-                                ),
-                              ),
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                            ),
-                            Text(
-                              '시흥청소년재단 소개',
-                              style: TextStyle(fontSize: 11.sp),
-                            )
-                          ],
-                        ),
-                        SizedBox(width: 20.w),
-                        Column(
-                          children: [
-                            SizedBox(height: 5.h),
-                            IconButton(
-                              onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Environmentalmonitoringintroduce())),
-                              icon: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(45.w),
-                                ),
-                                child: Image.asset(
-                                  'assets/sihwaho.png',
-                                  height: 70.w,
-                                  width: 70.w,
-                                ),
-                              ),
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                            ),
-                            Text(
-                              '시화호청소년환경감시단 소개',
-                              style: TextStyle(fontSize: 11.sp),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                        SizedBox(width: 20.w),
-                        Column(
-                          children: [
-                            SizedBox(height: 5.h),
-                            IconButton(
-                              onPressed: () {
-                                // 버튼을 클릭하면 B2D2 소개글 창으로 이동
-                                Future.delayed(Duration.zero, () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => B2d2Introduce()));
-                                });
-                              },
-                              icon: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(45.w),
-                                ),
-                                child: Image.asset(
-                                  'assets/B2D2.png',
-                                  height: 70.w,
-                                  width: 70.w,
-                                ),
-                              ),
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                            ),
-                            Text(
-                              '디지털환경감시단\nB2D2 소개',
-                              style: TextStyle(fontSize: 11.sp),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(10.w, 10.h, 170.w, 10.h),
-                    color: Color.fromRGBO(217, 217, 217, 1),
-                    child: Container(
-                      height: 40.h,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: DropdownButton(
-                          itemHeight: 48.0,
-                          underline: SizedBox.shrink(),
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          isExpanded: true,
-                          alignment: Alignment.center,
-                          focusColor: Colors.white,
-                          dropdownColor: Colors.white,
-                          value: _selectedValue,
-                          items: _groupList.map(
-                            (value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Center(
-                                  child: Text(
-                                    value,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(35.w),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/siheung_logo.png',
+                                    height: 70.w,
+                                    width: 70.w,
                                   ),
                                 ),
-                              );
-                            },
-                          ).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              if (_selectedValue != value && value != null) {
-                                int i = _groupList.indexOf(value);
-                                fetchData(i);
-                              }
-                              _selectedValue = value!;
-                            });
-                          }),
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                              ),
+                              Text(
+                                '시흥청소년재단 소개',
+                                style: TextStyle(fontSize: 11.sp),
+                              )
+                            ],
+                          ),
+                          SizedBox(width: 20.w),
+                          Column(
+                            children: [
+                              SizedBox(height: 5.h),
+                              IconButton(
+                                onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Environmentalmonitoringintroduce())),
+                                icon: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(45.w),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/sihwaho.png',
+                                    height: 70.w,
+                                    width: 70.w,
+                                  ),
+                                ),
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                              ),
+                              Text(
+                                '시화호청소년환경감시단 소개',
+                                style: TextStyle(fontSize: 11.sp),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                          SizedBox(width: 20.w),
+                          Column(
+                            children: [
+                              SizedBox(height: 5.h),
+                              IconButton(
+                                onPressed: () {
+                                  // 버튼을 클릭하면 B2D2 소개글 창으로 이동
+                                  Future.delayed(Duration.zero, () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                B2d2Introduce()));
+                                  });
+                                },
+                                icon: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(45.w),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/B2D2.png',
+                                    height: 70.w,
+                                    width: 70.w,
+                                  ),
+                                ),
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                              ),
+                              Text(
+                                '디지털환경감시단\nB2D2 소개',
+                                style: TextStyle(fontSize: 11.sp),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  FeedBox(
-                    feedData: feedData,
-                    myFeed: false,
-                  )
-                ],
-              )));
+                    SizedBox(height: 10.h),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10.w, 10.h, 170.w, 10.h),
+                      color: Color.fromRGBO(217, 217, 217, 1),
+                      child: Container(
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: DropdownButton(
+                            itemHeight: 48.0,
+                            underline: SizedBox.shrink(),
+                            icon: Icon(Icons.keyboard_arrow_down),
+                            isExpanded: true,
+                            alignment: Alignment.center,
+                            focusColor: Colors.white,
+                            dropdownColor: Colors.white,
+                            value: _selectedValue,
+                            items: _groupList.map(
+                              (value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Center(
+                                    child: Text(
+                                      value,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                if (_selectedValue != value && value != null) {
+                                  int i = _groupList.indexOf(value);
+                                  fetchData(i);
+                                }
+                                _selectedValue = value!;
+                              });
+                            }),
+                      ),
+                    ),
+                    FeedBox(
+                      feedData: feedData,
+                      myFeed: false,
+                    )
+                  ],
+                )),
+              ));
   }
 }
