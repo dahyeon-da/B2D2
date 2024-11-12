@@ -99,4 +99,24 @@ class FeedConnect extends GetConnect {
       return null;
     }
   }
+
+  // 피드 수정하기
+  Future sendFeedUpdate(
+      int feedNum, String boardDate, String boardContent) async {
+    try {
+      Response response = await patch('/api/v2/feeds/${feedNum}',
+          {'boardDate': boardDate, 'boardContent': boardContent},
+          headers: {'authorization': await getToken});
+
+      Map<String, dynamic> body = response.body;
+      print(body);
+
+      if (body['code'] != 200) {
+        return null;
+      }
+      return body;
+    } catch (e) {
+      return null;
+    }
+  }
 }

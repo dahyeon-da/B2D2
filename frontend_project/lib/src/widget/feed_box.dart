@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/screen/feed/feedModify.dart';
-import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/screen/tapbarPage/myPage.dart';
 import 'package:frontend_project/src/widget/imageView.dart';
 import 'package:get/get.dart';
@@ -151,7 +150,18 @@ class _FeedBoxState extends State<FeedBox> {
                                 IconButton(
                                   onPressed: () => Navigator.of(context).push(
                                       MaterialPageRoute(
-                                          builder: (context) => Feedmodify())),
+                                          builder: (context) =>
+                                              Feedmodify(userInformation: {
+                                                'boardNum': item['boardNum'],
+                                                'boardDate': item['boardDate'],
+                                                'boardContent':
+                                                    item['boardContent'],
+                                                'boardWriter':
+                                                    item['boardWriter'],
+                                                'boardWriterGroup':
+                                                    item['boardWriterGroup'],
+                                                'images': item['images']
+                                              }))),
                                   icon: Image.asset(
                                     'assets/modify.png',
                                     width: 20.h,
