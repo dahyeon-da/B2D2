@@ -410,6 +410,19 @@ class _MypageState extends State<Mypage> {
                           ),
                         ),
                       SizedBox(height: 20.h),
+                      Container(
+                        height: 5.h,
+                        color: const Color.fromARGB(255, 228, 228, 228),
+                        margin: EdgeInsets.only(bottom: 10.h),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5.w),
+                        child: Text(
+                          '나의 일지',
+                          style: TextStyle(
+                              fontSize: 17.sp, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                       FeedBox(
                         feedData: feedData,
                         myFeed: true,
