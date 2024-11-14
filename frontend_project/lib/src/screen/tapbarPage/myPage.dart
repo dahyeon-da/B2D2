@@ -142,7 +142,17 @@ class _MypageState extends State<Mypage> {
           )
         : Scaffold(
             backgroundColor: Colors.white,
-            appBar: App_bar(),
+            appBar: AppBar(
+              title: Image.asset(
+                'assets/B2D2_logo.png',
+                height: 40.h,
+              ),
+              iconTheme: IconThemeData(
+                color: Color.fromRGBO(255, 255, 255, 1),
+              ),
+              centerTitle: true,
+              backgroundColor: const Color.fromRGBO(245, 208, 67, 1),
+            ),
             body: RefreshIndicator(
               onRefresh: () async {
                 await getInformation();
@@ -426,6 +436,8 @@ class _MypageState extends State<Mypage> {
                       FeedBox(
                         feedData: feedData,
                         myFeed: true,
+                          memberName: memberName as String,
+                          isFeedPage: false
                       )
                     ],
                   ),

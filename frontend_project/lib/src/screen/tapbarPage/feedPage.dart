@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/screen/introduce/b2d2Introduce.dart';
@@ -24,11 +25,13 @@ final GetStorage _storage = GetStorage();
 class _FeedpageState extends State<Feedpage> {
   final feedConnect = Get.put(FeedConnect());
   final userController = Get.put(UserController());
+  final storage = new FlutterSecureStorage();
 
   bool isLoading = true;
   List<Map<String, dynamic>> feedData = [];
   bool isLogin = false;
   bool feedDataNull = false;
+  String memberName = '';
 
   // 페이지가 열릴때마다 로그인 여부를 확인
 
@@ -47,10 +50,12 @@ class _FeedpageState extends State<Feedpage> {
 
   Future<void> fetchData([group_num = 0]) async {
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
+
     List<dynamic> results = await feedConnect.FeedList(group_num);
     isLogin = await userController.isLogin();
+    memberName = await storage.read(key: 'memberName') ?? '';
 
     feedData = results.map((result) {
       return {
@@ -68,6 +73,7 @@ class _FeedpageState extends State<Feedpage> {
       feedDataNull = feedData.isEmpty;
     });
   }
+
 
   late final PageController _imageController;
 
@@ -87,7 +93,7 @@ class _FeedpageState extends State<Feedpage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: App_bar(),
+        appBar: App_bar(isLogin: isLogin),
         floatingActionButton: FeedWriteFloatingActionButton(isLogin: isLogin),
         body: isLoading
             ? Scaffold(
@@ -269,6 +275,8 @@ class _FeedpageState extends State<Feedpage> {
                         : FeedBox(
                             feedData: feedData,
                             myFeed: false,
+                            memberName: memberName.isEmpty ? '' : memberName,
+                            isFeedPage: true
                           ),
                   ],
                 )),

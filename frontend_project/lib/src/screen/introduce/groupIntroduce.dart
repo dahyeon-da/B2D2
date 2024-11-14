@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/src/model/groupModel.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
+import 'package:get/get.dart';
+
+import '../../controller/user_controller.dart';
 
 class Groupintroduce extends StatefulWidget {
   final int group;
@@ -13,6 +16,25 @@ class Groupintroduce extends StatefulWidget {
 }
 
 class _GroupintroduceState extends State<Groupintroduce> {
+  final userController = Get.put(UserController());
+  bool isLogin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLogin();
+  }
+
+  Future<void> _isLogin() async {
+    // 비동기 작업을 먼저 수행
+    bool loginStatus = await userController.isLogin();
+
+    // 비동기 작업이 완료된 후에 상태 업데이트
+    setState(() {
+      isLogin = loginStatus;
+    });
+  }
+
   List<Groupmodel> groupList = [
     Groupmodel(
         'B2D2',
@@ -47,7 +69,7 @@ class _GroupintroduceState extends State<Groupintroduce> {
     ScreenUtil.init(context, designSize: Size(375, 812), minTextAdapt: true);
 
     return Scaffold(
-      appBar: App_bar(),
+      appBar: App_bar(isLogin: isLogin),
       body: ListView(
         children: [
           Container(

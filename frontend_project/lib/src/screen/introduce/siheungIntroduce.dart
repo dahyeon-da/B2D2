@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
+import 'package:get/get.dart';
 
-class Siheungintroduce extends StatelessWidget {
+class Siheungintroduce extends StatefulWidget {
   const Siheungintroduce({super.key});
+
+  @override
+  State<Siheungintroduce> createState() => _SiheungintroduceState();
+}
+
+class _SiheungintroduceState extends State<Siheungintroduce> {
+  final userController = Get.put(UserController());
+  bool isLogin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLogin();
+  }
+
+  Future<void> _isLogin() async {
+    // 비동기 작업을 먼저 수행
+    bool loginStatus = await userController.isLogin();
+
+    // 비동기 작업이 완료된 후에 상태 업데이트
+    setState(() {
+      isLogin = loginStatus;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +37,7 @@ class Siheungintroduce extends StatelessWidget {
     ScreenUtil.init(context, designSize: Size(375, 812), minTextAdapt: true);
 
     return Scaffold(
-      appBar: App_bar(),
+      appBar: App_bar(isLogin: isLogin),
       backgroundColor: Colors.white,
       body: ListView(
         children: [

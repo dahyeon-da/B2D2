@@ -1,10 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend_project/src/connect/user_connect.dart';
+import 'package:frontend_project/src/controller/user_controller.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:frontend_project/src/widget/circle_image.dart';
+import 'package:get/get.dart';
 
-class Environmentalmonitoringintroduce extends StatelessWidget {
+class Environmentalmonitoringintroduce extends StatefulWidget {
   const Environmentalmonitoringintroduce({super.key});
+
+  @override
+  State<Environmentalmonitoringintroduce> createState() =>
+      _EnvironmentalmonitoringintroduceState();
+}
+
+class _EnvironmentalmonitoringintroduceState
+    extends State<Environmentalmonitoringintroduce> {
+  final userController = Get.put(UserController());
+  bool isLogin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLogin();
+  }
+
+  Future<void> _isLogin() async {
+    bool loginStatus = await userController.isLogin();
+
+    setState(() {
+      isLogin = loginStatus;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +40,7 @@ class Environmentalmonitoringintroduce extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: App_bar(),
+      appBar: App_bar(isLogin: isLogin),
       body: ListView(
         children: [
           Container(

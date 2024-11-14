@@ -2,6 +2,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend_project/shared/global.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/screen/feed/feedModify.dart';
@@ -13,8 +14,15 @@ import 'package:intl/intl.dart';
 class FeedBox extends StatefulWidget {
   final List<Map<String, dynamic>> feedData;
   final bool myFeed;
+  final String memberName;
+  final bool isFeedPage;
 
-  const FeedBox({super.key, required this.feedData, required this.myFeed});
+  const FeedBox(
+      {super.key,
+      required this.feedData,
+      required this.myFeed,
+      required this.memberName,
+      required this.isFeedPage});
 
   @override
   State<FeedBox> createState() => _FeedBoxState();
@@ -22,6 +30,8 @@ class FeedBox extends StatefulWidget {
 
 class _FeedBoxState extends State<FeedBox> {
   final feedConnect = Get.put(FeedConnect());
+  final storage = new FlutterSecureStorage();
+
   List<Map<String, dynamic>> feedData = [];
 
   @override
@@ -33,7 +43,7 @@ class _FeedBoxState extends State<FeedBox> {
   fetchData() async {
     try {
       final results = await feedConnect.FeedList();
-      setState(() {
+      setState(() async {
         feedData = List<Map<String, dynamic>>.from(results.map((result) {
           return {
             'boardNum': result['boardNum'],
@@ -144,7 +154,8 @@ class _FeedBoxState extends State<FeedBox> {
                         padding: EdgeInsets.all(5.w),
                         constraints: BoxConstraints(),
                       ),
-                      widget.myFeed
+                      widget.myFeed ||
+                              widget.memberName as String == item['boardWriter']
                           ? Row(
                               children: [
                                 IconButton(
@@ -161,7 +172,9 @@ class _FeedBoxState extends State<FeedBox> {
                                                 'boardWriterGroup':
                                                     item['boardWriterGroup'],
                                                 'images': item['images']
-                                              }))),
+                                                },
+                                                isFeedPage: widget.isFeedPage,
+                                              ))),
                                   icon: Image.asset(
                                     'assets/modify.png',
                                     width: 20.h,
@@ -202,27 +215,27 @@ class _FeedBoxState extends State<FeedBox> {
                 ],
               ),
               SizedBox(
-                height: 350.h,
-                width: 350.h,
-                child: (item['images'] == null ||
-                        item['images'].isEmpty) // 배열이 비어 있는지 체크
-                    ? Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        alignment: Alignment.center,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/no_photo.png',
-                                  height: 100.h, width: 100.h),
-                              Text(
-                                'No image',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(175, 175, 175, 1)),
-                              )
-                            ]),
-                      )
+                  height: 350.h,
+                  width: 350.h,
+                  child: (item['images'] == null ||
+                          item['images'].isEmpty) // 배열이 비어 있는지 체크
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          alignment: Alignment.center,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/no_photo.png',
+                                    height: 100.h, width: 100.h),
+                                Text(
+                                  'No image',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(175, 175, 175, 1)),
+                                )
+                              ]),
+                        )
                       : PageView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: item['images'].length,
@@ -257,9 +270,7 @@ class _FeedBoxState extends State<FeedBox> {
                               ),
                             );
                           },
-)
-
-              ),
+                        )),
               SizedBox(width: 8.w),
               Container(
                 margin: EdgeInsets.only(left: 8.w),

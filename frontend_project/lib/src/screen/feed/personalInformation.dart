@@ -19,7 +19,7 @@ class _PersonalinformationState extends State<Personalinformation> {
     ScreenUtil.init(context, designSize: Size(375, 812), minTextAdapt: true);
 
     return Scaffold(
-      appBar: App_bar(),
+      appBar: App_bar(isLogin: false),
       backgroundColor: Colors.white,
       body: ListView(
         children: [

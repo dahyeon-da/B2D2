@@ -9,6 +9,7 @@ class UserController extends GetxController {
 
   // 로그인 or 회원가입 여부를 확인
   Future<bool> isLogin() async {
+    print(_storage.hasData('access_token'));
     return await _storage.hasData('access_token');
   }
 

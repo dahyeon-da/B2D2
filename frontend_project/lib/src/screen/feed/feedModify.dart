@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_project/shared/global.dart';
 import 'package:frontend_project/src/connect/feed_connect.dart';
 import 'package:frontend_project/src/connect/image_connect.dart';
+import 'package:frontend_project/src/screen/tapbarPage/feedPage.dart';
 import 'package:frontend_project/src/screen/tapbarPage/myPage.dart';
 import 'package:frontend_project/src/widget/app_bar.dart';
 import 'package:get/get.dart';
@@ -13,8 +14,10 @@ import 'package:intl/intl.dart';
 
 class Feedmodify extends StatefulWidget {
   final Map<String, dynamic> userInformation;
+  final bool isFeedPage;
 
-  const Feedmodify({super.key, required this.userInformation});
+  const Feedmodify(
+      {super.key, required this.userInformation, required this.isFeedPage});
 
   @override
   State<Feedmodify> createState() => _FeedmodifyState();
@@ -68,38 +71,52 @@ class _FeedmodifyState extends State<Feedmodify> {
   updateFeed() async {
     try {
       Map<String, dynamic> feedResult = await feedConnect.sendFeedUpdate(
-          widget.userInformation['boardNum'],
-          _selectedDate,
-          _contentController.text);
-      if (_uploadImages.isNotEmpty || _uploadImages != []) {
-        if (feedResult.isNotEmpty || feedResult != '') {
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Mypage()),
+        widget.userInformation['boardNum'],
+        _selectedDate,
+        _contentController.text,
+      );
+
+      if (feedResult.isNotEmpty) {
+        // 피드 업데이트 성공 시 이미지 업로드 시도
+        if (_uploadImages.isNotEmpty) {
+          Map<String, dynamic> imageResult = await imageConnect.uploadImage(
+            widget.userInformation['boardNum'],
+            _uploadImages,
           );
+
+          if (imageResult.isNotEmpty) {
+            _navigateToNextPage();
+          }
+        } else {
+          _navigateToNextPage();
         }
-      }
-      Map<String, dynamic> imageResult = await imageConnect.uploadImage(
-          widget.userInformation['boardNum'], _uploadImages);
-      if (imageResult.isNotEmpty || imageResult != '') {
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Mypage()),
-        );
       }
     } catch (e) {
       print('Error: $e');
     }
   }
 
+  void _navigateToNextPage() {
+    if (widget.isFeedPage) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Feedpage()));
+    } else {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Mypage()));
+    }
+  }
+
   removeImage(int fileNum) async {
     try {
       results = await feedConnect.sendImageDelete(fileNum);
-      if (results != null && results.isNotEmpty) {
+      if (results.isNotEmpty) {
+        setState(() {
+          _selectedImages.removeWhere((image) => image == fileNum.toString());
+        });
         print('이미지 삭제 성공: $fileNum');
       } else {
         print('이미지 삭제 실패');
@@ -108,6 +125,7 @@ class _FeedmodifyState extends State<Feedmodify> {
       print('이미지 삭제 중 오류 발생: $e');
     }
   }
+
 
   final TextEditingController _contentController = TextEditingController();
 
@@ -118,7 +136,7 @@ class _FeedmodifyState extends State<Feedmodify> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: App_bar(),
+      appBar: App_bar(isLogin: true),
       body: ListView(
         children: [
           SizedBox(height: 10.h),
@@ -341,8 +359,7 @@ class _FeedmodifyState extends State<Feedmodify> {
                           },
                         ),
                       ),
-                    ]
-                    );
+                    ]);
                   }).toList(),
               ],
             ),

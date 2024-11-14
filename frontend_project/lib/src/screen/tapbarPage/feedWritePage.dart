@@ -12,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../controller/user_controller.dart';
+
 class Feedwritepage extends StatefulWidget {
   final Feedmodel userInformation;
 
@@ -29,6 +31,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
   @override
   void initState() {
     super.initState();
+    _isLogin();
     _getData();
   }
 
@@ -61,6 +64,15 @@ class _FeedwritepageState extends State<Feedwritepage> {
 
   final _picker = ImagePicker();
   final List<File> _selectedImages = [];
+
+  final userController = Get.put(UserController());
+  bool isLogin = false;
+
+  _isLogin() async {
+    setState(() async {
+      isLogin = await userController.isLogin();
+    });
+  }
 
   Future<void> _pickImage() async {
     // 여러 이미지 선택 가능
@@ -102,7 +114,7 @@ class _FeedwritepageState extends State<Feedwritepage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: App_bar(),
+      appBar: App_bar(isLogin: isLogin),
       body: ListView(
         children: [
           SizedBox(height: 10.h),
