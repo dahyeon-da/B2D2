@@ -318,7 +318,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(height: 30.h),
+            SizedBox(height: 20.h),
             Image.asset(
               'assets/logo.png',
               height: 33.h,

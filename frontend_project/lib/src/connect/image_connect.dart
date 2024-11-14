@@ -53,27 +53,4 @@ class ImageConnect {
       throw Exception('서버 통신오류: $e');
     }
   }
-
-  // 이미지 삭제
-  Future deleteImage(int fileNum) async {
-    try {
-      Response response = await Dio().delete(
-        '/api/v2/images/$fileNum',
-        options: Options(
-          headers: {'Authorization': 'Bearer ${await getToken}'},
-        ),
-      );
-
-      Map<String, dynamic> body = response.data;
-
-      print(body);
-
-      if (body['code'] != 201) {
-        return null;
-      }
-      return body;
-    } catch (e) {
-      print('이미지 삭제 중 오류 발생: $e');
-    }
-  }
 }

@@ -124,4 +124,22 @@ class FeedConnect extends GetConnect {
       return null;
     }
   }
+
+  // 이미지 삭제하기
+  sendImageDelete(int fileNum) async {
+    try {
+      Response response = await delete('/api/v2/images/${fileNum}',
+          headers: {'authorization': await getToken});
+
+      Map<String, dynamic> body = response.body;
+      print(body);
+
+      if (body['code'] != 200) {
+        return null;
+      }
+      return body;
+    } catch (e) {
+      return null;
+    }
+  }
 }

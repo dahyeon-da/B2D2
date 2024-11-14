@@ -28,6 +28,7 @@ class _FeedmodifyState extends State<Feedmodify> {
   List _selectedImages = [];
   List<File> _uploadImages = [];
   final _picker = ImagePicker();
+  late Map<String, dynamic> results;
 
   @override
   void initState() {
@@ -61,7 +62,6 @@ class _FeedmodifyState extends State<Feedmodify> {
         _uploadImages
             .addAll(pickedFiles.map((pickedFile) => File(pickedFile.path)));
       });
-      print('Selected images: ${_uploadImages.length}');
     }
   }
 
@@ -99,11 +99,8 @@ class _FeedmodifyState extends State<Feedmodify> {
 
   removeImage(int fileNum) async {
     try {
-      Map<String, dynamic> results = await imageConnect.deleteImage(fileNum);
-      if (results.isNotEmpty) {
-        setState(() {
-          _selectedImages.removeWhere((imageUrl) => imageUrl == fileNum);
-        });
+      results = await feedConnect.sendImageDelete(fileNum);
+      if (results != null && results.isNotEmpty) {
         print('이미지 삭제 성공: $fileNum');
       } else {
         print('이미지 삭제 실패');
@@ -297,12 +294,14 @@ class _FeedmodifyState extends State<Feedmodify> {
                             top: 0,
                             right: 0,
                             child: IconButton(
-                              icon: Icon(Icons.close,
-                                  color: Colors.white, size: 20),
+                              icon: Icon(Icons.remove_circle,
+                                  color: Colors.black),
                               onPressed: () {
                                 setState(() {
-                                  removeImage(
-                                      int.parse(imageUrl)); // 파일 ID로 서버에 삭제 요청
+                                  removeImage(int.parse(imageUrl));
+                                  if (results != null && results.isNotEmpty) {
+                                    _selectedImages.remove(imageUrl);
+                                  }
                                 });
                               },
                             ),
@@ -312,7 +311,7 @@ class _FeedmodifyState extends State<Feedmodify> {
                     );
                   }).toList(),
 
-                // _uploadImages가 비어있지 않으면 로컬에서 선택한 이미지들 표시
+                // _uploadImages가 비어있지 않으면 선택한 이미지들 표시
                 if (_uploadImages.isNotEmpty)
                   ..._uploadImages.map((image) {
                     return Padding(
