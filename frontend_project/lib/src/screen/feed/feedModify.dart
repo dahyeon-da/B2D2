@@ -75,7 +75,6 @@ class _FeedmodifyState extends State<Feedmodify> {
         if (feedResult.isNotEmpty || feedResult != '') {
           Navigator.pop(context);
           Navigator.pop(context);
-          Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Mypage()),
@@ -296,9 +295,9 @@ class _FeedmodifyState extends State<Feedmodify> {
                             child: IconButton(
                               icon: Icon(Icons.remove_circle,
                                   color: Colors.black),
-                              onPressed: () {
+                              onPressed: () async {
+                                await removeImage(int.parse(imageUrl));
                                 setState(() {
-                                  removeImage(int.parse(imageUrl));
                                   if (results != null && results.isNotEmpty) {
                                     _selectedImages.remove(imageUrl);
                                   }
@@ -314,20 +313,35 @@ class _FeedmodifyState extends State<Feedmodify> {
                 // _uploadImages가 비어있지 않으면 선택한 이미지들 표시
                 if (_uploadImages.isNotEmpty)
                   ..._uploadImages.map((image) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 10.w),
-                      child: Container(
-                        height: 100.w,
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color.fromRGBO(189, 189, 189, 1),
-                          image: DecorationImage(
-                            image: FileImage(image),
-                            fit: BoxFit.cover,
+                    return Stack(children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10.w),
+                        child: Container(
+                          height: 100.w,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromRGBO(189, 189, 189, 1),
+                            image: DecorationImage(
+                              image: FileImage(image),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: IconButton(
+                          icon: Icon(Icons.remove_circle, color: Colors.black),
+                          onPressed: () {
+                            setState(() {
+                              _uploadImages.remove(image);
+                            });
+                          },
+                        ),
+                      ),
+                    ]
                     );
                   }).toList(),
               ],
