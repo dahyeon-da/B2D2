@@ -28,6 +28,7 @@ class _FeedpageState extends State<Feedpage> {
   bool isLoading = true;
   List<Map<String, dynamic>> feedData = [];
   bool isLogin = false;
+  bool feedDataNull = false;
 
   // 페이지가 열릴때마다 로그인 여부를 확인
 
@@ -64,6 +65,7 @@ class _FeedpageState extends State<Feedpage> {
 
     setState(() {
       isLoading = false;
+      feedDataNull = feedData.isEmpty;
     });
   }
 
@@ -254,10 +256,20 @@ class _FeedpageState extends State<Feedpage> {
                             }),
                       ),
                     ),
-                    FeedBox(
-                      feedData: feedData,
-                      myFeed: false,
-                    )
+                    feedDataNull
+                        ? Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: Text(
+                                '일지가 없습니다.',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          )
+                        : FeedBox(
+                            feedData: feedData,
+                            myFeed: false,
+                          ),
                   ],
                 )),
               ));

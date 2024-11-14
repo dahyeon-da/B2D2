@@ -35,6 +35,7 @@ class FeedConnect extends GetConnect {
       }
       Response response = await get(url);
       Map<String, dynamic> body = response.body;
+      print(body);
 
       if (body['code'] != 200) {
         throw Exception(body['message']);
